@@ -5,11 +5,11 @@
 
 ## Demo
     
-    ![login](./doc/login.PNG "login")
+![login](doc/login.PNG "login")
     
-    ![menusMng](./doc/menusMng.PNG "menusMng")
+![menusMng](doc/menusMng.PNG "menusMng")
     
-    ![rolesMng](./doc/rolesMng.PNG "rolesMng")
+![rolesMng](doc/rolesMng.PNG "rolesMng")
 
 ## background
 
