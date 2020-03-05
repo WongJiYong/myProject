@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuersheng.myProject.mapper.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.xuersheng.myProject.model.Role">
+    <id column="r_id" jdbcType="BIGINT" property="id" />
+    <result column="r_name" jdbcType="VARCHAR" property="name" />
+    <result column="r_remark" jdbcType="VARCHAR" property="remark" />
+    <result column="r_data_scope" jdbcType="VARCHAR" property="dataScope" />
+    <result column="r_level" jdbcType="INTEGER" property="level" />
+    <result column="r_create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="r_permission" jdbcType="VARCHAR" property="permission" />
+    <result column="r_deleted" jdbcType="BIT" property="deleted" />
+    <result column="r_version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    r.id as r_id, r.name as r_name, r.remark as r_remark, r.data_scope as r_data_scope, 
+    r.level as r_level, r.create_time as r_create_time, r.permission as r_permission, 
+    r.deleted as r_deleted, r.version as r_version
+  </sql>
+  <select id="selectByExample" parameterType="com.xuersheng.myProject.model.example.RoleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from role r
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from role r
+    where r.id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from role
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xuersheng.myProject.model.example.RoleExample">
+    delete from role r
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xuersheng.myProject.model.Role">
+    insert into role (id, name, remark, 
+      data_scope, level, create_time, 
+      permission, deleted, version
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{dataScope,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{permission,jdbcType=VARCHAR}, #{deleted,jdbcType=BIT}, #{version,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xuersheng.myProject.model.Role">
+    insert into role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="dataScope != null">
+        data_scope,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="permission != null">
+        permission,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="dataScope != null">
+        #{dataScope,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="permission != null">
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xuersheng.myProject.model.example.RoleExample" resultType="java.lang.Long">
+    select count(*) from role r
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update role r
+    <set>
+      <if test="record.id != null">
+        r.id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null">
+        r.name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        r.remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataScope != null">
+        r.data_scope = #{record.dataScope,jdbcType=VARCHAR},
+      </if>
+      <if test="record.level != null">
+        r.level = #{record.level,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        r.create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.permission != null">
+        r.permission = #{record.permission,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        r.deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.version != null">
+        r.version = #{record.version,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update role r
+    set r.id = #{record.id,jdbcType=BIGINT},
+      r.name = #{record.name,jdbcType=VARCHAR},
+      r.remark = #{record.remark,jdbcType=VARCHAR},
+      r.data_scope = #{record.dataScope,jdbcType=VARCHAR},
+      r.level = #{record.level,jdbcType=INTEGER},
+      r.create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      r.permission = #{record.permission,jdbcType=VARCHAR},
+      r.deleted = #{record.deleted,jdbcType=BIT},
+      r.version = #{record.version,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xuersheng.myProject.model.Role">
+    update role
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="dataScope != null">
+        data_scope = #{dataScope,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="permission != null">
+        permission = #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xuersheng.myProject.model.Role">
+    update role
+    set name = #{name,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      data_scope = #{dataScope,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      permission = #{permission,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=BIT},
+      version = #{version,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

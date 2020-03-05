@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration  scan="false" scanPeriod="10 seconds">
+
+    <!--<include resource="org/springframework/boot/logging/logback/base.xml" />-->
+
+    <contextName>logback</contextName>
+
+    <!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+
+    <property name="OUT_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
+
+    <!--输出到控制台-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>${OUT_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+
+    <!--输出到文件-->
+<!--    <appender name="SYSTEM_FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        &lt;!&ndash; 过滤器，只打印ERROR级别的日志 &ndash;&gt;-->
+<!--&lt;!&ndash;        <filter class="ch.qos.logback.classic.filter.LevelFilter">&ndash;&gt;-->
+<!--&lt;!&ndash;            <level>ERROR</level>&ndash;&gt;-->
+<!--&lt;!&ndash;            <onMatch>ACCEPT</onMatch>&ndash;&gt;-->
+<!--&lt;!&ndash;            <onMismatch>DENY</onMismatch>&ndash;&gt;-->
+<!--&lt;!&ndash;        </filter>&ndash;&gt;-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash;日志文件输出的文件名&ndash;&gt;-->
+<!--            <FileNamePattern>${app.home}/logs/log.out.%i.%d{yy-MM-dd}</FileNamePattern>-->
+<!--            &lt;!&ndash;日志文件保留天数&ndash;&gt;-->
+<!--            <MaxHistory>15</MaxHistory>-->
+<!--            &lt;!&ndash;日志文件最大的大小&ndash;&gt;-->
+<!--            <MaxFileSize>10MB</MaxFileSize>-->
+<!--            <totalSizeCap>150MB</totalSizeCap>-->
+<!--        </rollingPolicy>-->
+
+<!--        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
+<!--            &lt;!&ndash;格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符&ndash;&gt;-->
+<!--            <pattern>${OUT_PATTERN}</pattern>-->
+<!--            <charset>UTF-8</charset>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
+    <!-- 开发环境下的日志配置 -->
+    <springProfile name="dev,test">
+        <root level="debug">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+    <!-- 生产环境下的日志配置 -->
+    <springProfile name="prod">
+        <root level="ERROR">
+            <appender-ref ref="SYSTEM_FILE" />
+        </root>
+    </springProfile>
+
+    <logger name="org.mybatis" level="DEBUG" />
+    <logger name="com.ztesoft" level="DEBUG" />
+</configuration>

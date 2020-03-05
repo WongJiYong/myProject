@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <classPathEntry
+            location="D:\maven_file\.m2\repository\mysql\mysql-connector-java\5.1.18\mysql-connector-java-5.1.18.jar"/>
+
+    <context id="DB2Tables" targetRuntime="MyBatis3" defaultModelType="extra_flat">
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <property name="addRemarkComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/server_management"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.ztesoft.devops.system.model"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="system.sqlMapper"
+                         targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.ztesoft.devops.system.mapper"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+<!--        <table schema="server_management" tableName="action" alias="a"/>-->
+<!--        <table schema="server_management" tableName="catalog" alias="c"/>-->
+<!--        <table schema="server_management" tableName="dept" alias="d"/>-->
+<!--        <table schema="server_management" tableName="dict" alias="dic"/>-->
+<!--        <table schema="server_management" tableName="dict_detail" alias="dd"/>-->
+<!--        <table schema="server_management" tableName="email_config" alias="ec"/>-->
+<!--        <table schema="server_management" tableName="job" alias="j"/>-->
+<!--        <table schema="server_management" tableName="local_storage" alias="ls"/>-->
+<!--        <table schema="server_management" tableName="log" alias="l"/>-->
+<!--        <table schema="server_management" tableName="menu" alias="m"/>-->
+<!--        <table schema="server_management" tableName="picture" alias="p"/>-->
+<!--        <table schema="server_management" tableName="process_info" alias="pi"/>-->
+<!--        <table schema="server_management" tableName="role" alias="r"/>-->
+<!--        <table schema="server_management" tableName="roles_action" alias="ra"/>-->
+<!--        <table schema="server_management" tableName="roles_depts" alias="rd"/>-->
+<!--        <table schema="server_management" tableName="roles_menus" alias="rm"/>-->
+<!--        <table schema="server_management" tableName="server_info" alias="si"/>-->
+<!--        <table schema="server_management" tableName="user" alias="u"/>-->
+<!--        <table schema="server_management" tableName="user_avatar" alias="ua"/>-->
+<!--        <table schema="server_management" tableName="user_setting" alias="us"/>-->
+<!--        <table schema="server_management" tableName="users_roles" alias="ur"/>-->
+<!--        <table schema="server_management" tableName="verification_code" alias="vc"/>-->
+
+    </context>
+</generatorConfiguration>

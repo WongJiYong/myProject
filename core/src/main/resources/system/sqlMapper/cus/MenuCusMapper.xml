@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuersheng.myProject.mapper.cus.MenuCusMapper">
+
+    <resultMap id="MenusAction" extends="com.xuersheng.myProject.mapper.MenuMapper.BaseResultMap"
+               type="com.xuersheng.myProject.model.Menu">
+        <collection property="actions" ofType="com.xuersheng.myProject.model.Action"
+                    resultMap="com.xuersheng.myProject.mapper.ActionMapper.BaseResultMap"
+                    column="m_id" foreignColumn="a_menu_id">
+        </collection>
+    </resultMap>
+
+    <select id="selectMenusByRoleId" resultMap="MenusAction">
+        SELECT
+        <include refid="com.xuersheng.myProject.mapper.MenuMapper.Base_Column_List"/>,
+        <include refid="com.xuersheng.myProject.mapper.ActionMapper.Base_Column_List"/>
+        FROM menu m
+        LEFT JOIN action a ON m.id = a.menu_id
+        WHERE 1 = 1
+        AND m.id IN (SELECT rm.menu_id FROM roles_menus rm WHERE rm.role_id = #{roleId} AND rm.deleted = 0)
+        AND (a.id IS NULL OR
+        a.id IN (SELECT ra.action_id FROM roles_action ra WHERE ra.role_id = #{roleId} AND ra.deleted = 0))
+        AND m.deleted = 0
+        AND m.enabled = 1
+        AND (a.deleted IS NULL OR a.deleted = 0)
+        AND (a.enabled IS NULL OR a.enabled = 1)
+        ORDER BY m.sort
+    </select>
+
+    <select id="selectMenus" resultMap="MenusAction">
+        SELECT
+        <include refid="com.xuersheng.myProject.mapper.MenuMapper.Base_Column_List"/>,
+        <include refid="com.xuersheng.myProject.mapper.ActionMapper.Base_Column_List"/>
+        FROM menu m
+        LEFT JOIN action a ON m.id = a.menu_id
+        WHERE m.deleted = 0
+        AND (a.deleted = 0 OR a.deleted IS NULL)
+        ORDER BY m.sort;
+    </select>
+</mapper>
