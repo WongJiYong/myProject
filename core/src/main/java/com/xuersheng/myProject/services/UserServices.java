@@ -3,10 +3,11 @@ package com.xuersheng.myProject.services;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xuersheng.myProject.db.DataSource;
+import com.xuersheng.myProject.mapper.RoleMapper;
 import com.xuersheng.myProject.mapper.UserMapper;
 import com.xuersheng.myProject.mapper.UserSettingMapper;
 import com.xuersheng.myProject.mapper.UsersRolesMapper;
-import com.xuersheng.myProject.mapper.cus.UserCusMapper;
+import com.xuersheng.myProject.model.Role;
 import com.xuersheng.myProject.model.User;
 import com.xuersheng.myProject.model.UserSetting;
 import com.xuersheng.myProject.model.UsersRoles;
@@ -23,6 +24,7 @@ import com.xuersheng.myProject.util.SecurityContextUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -32,13 +34,14 @@ import java.util.stream.Collectors;
 
 @Service
 @DataSource("default")
+@Transactional
 public class UserServices {
 
     @Resource
     UserMapper userMapper;
 
     @Resource
-    UserCusMapper userCusMapper;
+    RoleMapper roleMapper;
 
     @Resource
     UsersRolesMapper usersRolesMapper;
@@ -48,7 +51,7 @@ public class UserServices {
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public PageVo queryUsers(UserDto roleDto) {
+    public PageVo<?> queryUsers(UserDto roleDto) {
         PageHelper.startPage(
                 roleDto.getPage().getCurrentPage(),
                 roleDto.getPage().getPageSize());
@@ -72,17 +75,29 @@ public class UserServices {
         }
         List<User> users = userMapper.selectByExample(userExample);
         List<UserVo> userVos = BeanUtils.copyListDeeply(users, UserVo.class);
-        return PageBuilder.builder(userVos, (Page) users);
+        return PageBuilder.builder(userVos, (Page<?>) users);
     }
 
-    @Transactional
     public boolean modifySetting(UserSettingDto dto) {
         UserSetting userSetting = new UserSetting();
         BeanUtils.copyPropertiesDeeply(dto, userSetting);
+        //获取登录用户的id
+        Long id = SecurityContextUtils.getUser().getId();
+        //check roleId
+        Long roleId = dto.getRoleId();
+        if (roleId != null) {
+            UsersRolesExample usersRolesExample = new UsersRolesExample();
+            usersRolesExample.createCriteria()
+                    .andRoleIdEqualTo(roleId);
+            List<UsersRoles> usersRoles = usersRolesMapper.selectByExample(usersRolesExample);
+            if (usersRoles.size() != 1) {
+                return false;
+            }
+        }
+        userSetting.setUserId(id);
         return 1 == userSettingMapper.updateByPrimaryKeySelective(userSetting);
     }
 
-    @Transactional
     public boolean addUser(UserDto roleDto) {
         User role = new User();
         role.setId(null);
@@ -90,48 +105,52 @@ public class UserServices {
             roleDto.setPassword(passwordEncoder.encode(roleDto.getPassword()));
         }
         role.setCreateTime(new Date());
+        role.setDeleted(false);
         BeanUtils.copyPropertiesDeeply(roleDto, role);
-        return 1 == userMapper.insert(role);
+        Assert.isTrue(1 == userMapper.insert(role), "添加用户失败");
+        UserSetting userSetting = new UserSetting();
+        userSetting.setDeleted(false);
+        userSetting.setUserId(role.getId());
+        Assert.isTrue(1 == userSettingMapper.insert(userSetting), "添加配置错误");
+        return true;
     }
 
-    @Transactional
     public boolean modifyUser(UserDto roleDto) {
         User role = new User();
         BeanUtils.copyPropertiesDeeply(roleDto, role);
         return 1 == userMapper.updateByPrimaryKeySelective(role);
     }
 
-    @Transactional
     public boolean removeUser(UserDto roleDto) {
-        return 1 == userMapper.deleteByPrimaryKey(roleDto.getId());
+        User role = new User();
+        role.setId(roleDto.getId());
+        role.setDeleted(true);
+        return 1 == userMapper.updateByPrimaryKeySelective(role);
     }
 
-    @Transactional
     public boolean addRole(UserRoleDto dto) {
-        UsersRoles usersRoles = new UsersRoles();
-        BeanUtils.copyPropertiesDeeply(dto, usersRoles);
-        usersRoles.setDeleted(true);
-        return saveOrUpdateUserRole(usersRoles);
-    }
-
-    @Transactional
-    public boolean removeRole(UserRoleDto dto) {
         UsersRoles usersRoles = new UsersRoles();
         BeanUtils.copyPropertiesDeeply(dto, usersRoles);
         usersRoles.setDeleted(false);
         return saveOrUpdateUserRole(usersRoles);
     }
 
-    @DataSource("default")
+    public boolean removeRole(UserRoleDto dto) {
+        UsersRoles usersRoles = new UsersRoles();
+        BeanUtils.copyPropertiesDeeply(dto, usersRoles);
+        usersRoles.setDeleted(true);
+        return saveOrUpdateUserRole(usersRoles);
+    }
+
     public UserVo userDetailInfo() {
         Long id = SecurityContextUtils.getUser().getId();
-        User user = userCusMapper.selectUserDetailById(id);
+        User user = userMapper.selectUserDetailById(id);
         UserVo vo = new UserVo();
         BeanUtils.copyPropertiesDeeply(user, vo);
         return vo;
     }
 
-    @DataSource("default")
+
     public boolean lockUser(UserDto dto) {
         User user = new User();
         user.setId(dto.getId());
@@ -139,17 +158,24 @@ public class UserServices {
         return 1 == userMapper.updateByPrimaryKeySelective(user);
     }
 
-    @DataSource("default")
-    public List<Long> queryUserRoles(UserDto dto) {
+
+    public List<Long> queryUserRoles() {
+        Long userId = SecurityContextUtils.getUser().getId();
         UsersRolesExample usersRolesExample = new UsersRolesExample();
         usersRolesExample.createCriteria()
-                .andUserIdEqualTo(dto.getId());
+                .andUserIdEqualTo(userId);
         List<UsersRoles> usersRoles = usersRolesMapper.selectByExample(usersRolesExample);
         return usersRoles.stream().map(UsersRoles::getRoleId).collect(Collectors.toList());
     }
 
     private boolean saveOrUpdateUserRole(UsersRoles usersRoles) {
-        UsersRoles userRole = usersRolesMapper.selectByPrimaryKey(usersRoles.getUserId(), usersRoles.getRoleId());
+        //检查角色是否存在
+        Long roleId = usersRoles.getRoleId();
+        Role role = roleMapper.selectByPrimaryKey(roleId);
+        if (role == null) {
+            return false;
+        }
+        UsersRoles userRole = usersRolesMapper.selectByPrimaryKey(usersRoles.getUserId(), roleId);
         if (userRole == null) {
             return 1 == usersRolesMapper.insert(usersRoles);
         } else {
