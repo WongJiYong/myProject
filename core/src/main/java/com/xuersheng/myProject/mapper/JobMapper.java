@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.Job;
 import com.xuersheng.myProject.model.example.JobExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface JobMapper {
+
     long countByExample(JobExample example);
 
     int deleteByExample(JobExample example);

@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.Action;
 import com.xuersheng.myProject.model.example.ActionExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface ActionMapper {
+
     long countByExample(ActionExample example);
 
     int deleteByExample(ActionExample example);

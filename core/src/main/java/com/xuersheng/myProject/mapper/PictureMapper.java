@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.Picture;
 import com.xuersheng.myProject.model.example.PictureExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface PictureMapper {
+
     long countByExample(PictureExample example);
 
     int deleteByExample(PictureExample example);

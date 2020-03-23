@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.DictDetail;
 import com.xuersheng.myProject.model.example.DictDetailExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DictDetailMapper {
+
     long countByExample(DictDetailExample example);
 
     int deleteByExample(DictDetailExample example);

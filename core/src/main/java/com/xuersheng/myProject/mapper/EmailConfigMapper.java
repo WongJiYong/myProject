@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.EmailConfig;
 import com.xuersheng.myProject.model.example.EmailConfigExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface EmailConfigMapper {
+
     long countByExample(EmailConfigExample example);
 
     int deleteByExample(EmailConfigExample example);

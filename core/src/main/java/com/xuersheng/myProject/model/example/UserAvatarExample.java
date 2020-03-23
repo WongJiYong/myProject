@@ -12,7 +12,7 @@ public class UserAvatarExample {
     protected List<Criteria> oredCriteria;
 
     public UserAvatarExample() {
-        oredCriteria = new ArrayList<Criteria>();
+        oredCriteria = new ArrayList<>();
     }
 
     public void setOrderByClause(String orderByClause) {
@@ -64,12 +64,17 @@ public class UserAvatarExample {
         distinct = false;
     }
 
+    /**
+     * table: user_avatar
+     *
+     * @mbg.generated
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
-            criteria = new ArrayList<Criterion>();
+            criteria = new ArrayList<>();
         }
 
         public boolean isValid() {
@@ -556,13 +561,22 @@ public class UserAvatarExample {
         }
     }
 
+    /**
+     * table: user_avatar
+     *
+     * @mbg.generated do_not_delete_during_merge
+     */
     public static class Criteria extends GeneratedCriteria {
-
         protected Criteria() {
             super();
         }
     }
 
+    /**
+     * table: user_avatar
+     *
+     * @mbg.generated
+     */
     public static class Criterion {
         private String condition;
 

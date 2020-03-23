@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.ProcessInfo;
 import com.xuersheng.myProject.model.example.ProcessInfoExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface ProcessInfoMapper {
+
     long countByExample(ProcessInfoExample example);
 
     int deleteByExample(ProcessInfoExample example);

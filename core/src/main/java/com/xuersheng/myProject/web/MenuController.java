@@ -36,7 +36,7 @@ public class MenuController {
      * @return 该角色下的菜单
      */
     @GetMapping("load")
-    public ResponseEntity loadMenusByRole(@RequestBody(required = false) RoleDto roleDto) {
+    public ResponseEntity<Object> loadMenusByRole(@RequestBody(required = false) RoleDto roleDto) {
         Long roleId = roleDto != null ? roleDto.getId() : null;
         if (roleId == null) {
             UserSetting userSetting = SecurityContextUtils.getUser().getUserSetting();
@@ -53,25 +53,25 @@ public class MenuController {
     }
 
     @GetMapping("query")
-    public ResponseEntity queryMenus(@RequestBody(required = false) MenuDto menuDto) {
+    public ResponseEntity<Object> queryMenus(@RequestBody(required = false) MenuDto menuDto) {
         List<MenuVo> menus = menuServices.queryMenus(menuDto);
         return success(menus);
     }
 
     @PostMapping("add")
-    public ResponseEntity addMenu(@RequestBody MenuDto menuDto) {
+    public ResponseEntity<Object> addMenu(@RequestBody MenuDto menuDto) {
         return menuServices.addMenu(menuDto) ?
                 success(menuDto.getId()) : error(ADD_ERROR);
     }
 
     @PostMapping("modify")
-    public ResponseEntity modifyMenu(@RequestBody MenuDto menuDto) {
+    public ResponseEntity<Object> modifyMenu(@RequestBody MenuDto menuDto) {
         return menuServices.modifyMenu(menuDto) ?
                 success() : error(MODIFY_ERROR);
     }
 
     @PostMapping("remove")
-    public ResponseEntity removeMenu(@RequestBody MenuDto menuDto) {
+    public ResponseEntity<Object> removeMenu(@RequestBody MenuDto menuDto) {
         return menuServices.removeMenu(menuDto) ?
                 success() : error(REMOVE_ERROR);
     }

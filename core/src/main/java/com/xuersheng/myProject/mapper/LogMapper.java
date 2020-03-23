@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.Log;
 import com.xuersheng.myProject.model.example.LogExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface LogMapper {
+
     long countByExample(LogExample example);
 
     int deleteByExample(LogExample example);

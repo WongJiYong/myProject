@@ -7,8 +7,8 @@ import java.util.List;
 
 public abstract class PageBuilder {
 
-    public static PageVo builder(List<?> data, Page page) {
-        PageVo pageVo = new PageVo();
+    public static <T> PageVo<T> builder(List<T> data, Page<?> page) {
+        PageVo<T> pageVo = new PageVo<>();
         pageVo.setData(data);
         pageVo.setTotal(page.getTotal());
         pageVo.setPageNum(page.getPageNum());

@@ -2,7 +2,6 @@ package com.xuersheng.myProject.security;
 
 import com.xuersheng.myProject.db.DataSource;
 import com.xuersheng.myProject.mapper.UserMapper;
-import com.xuersheng.myProject.mapper.cus.UserCusMapper;
 import com.xuersheng.myProject.model.Role;
 import com.xuersheng.myProject.model.User;
 import com.xuersheng.myProject.model.example.UserExample;
@@ -24,9 +23,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Resource
     UserMapper userMapper;
 
-    @Resource
-    UserCusMapper userCusMapper;
-
 
     @Override
     @DataSource("default")
@@ -41,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         Long id = users.get(0).getId();
-        User user = userCusMapper.selectUserDetailById(id);
+        User user = userMapper.selectUserDetailById(id);
         List<Role> roles = user.getRoles();
         List<Long> roleIds = roles.stream().map(Role::getId).collect(Collectors.toList());
         user.setRoleIds(roleIds);

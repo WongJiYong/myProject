@@ -67,8 +67,8 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //允许所有请求获取csrf token
                 .antMatchers("/csrf").permitAll()
-                // 所有授权的都可以访问
-                .antMatchers("/user/info", "/hello").authenticated()
+                // 所有已授权的都可以访问
+                .antMatchers("/hello", "/user/info", "/user/setting/modify").authenticated()
                 // 其他所有请求都拒绝
                 .anyRequest().denyAll()
                 .accessDecisionManager(new AffirmativeBased(decisionVoters))

@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.Menu;
 import com.xuersheng.myProject.model.example.MenuExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface MenuMapper {
+
     long countByExample(MenuExample example);
 
     int deleteByExample(MenuExample example);
@@ -28,4 +28,8 @@ public interface MenuMapper {
     int updateByPrimaryKeySelective(Menu record);
 
     int updateByPrimaryKey(Menu record);
+
+    List<Menu> selectMenusByRoleId(Long roleId);
+
+    List<Menu> selectMenus();
 }

@@ -7,16 +7,8 @@ import lombok.Setter;
 @Setter
 public class UserSettingDto {
 
-    private Long id;
-
-    private Long userId;
-
     private Long roleId;
 
     private Integer pageSize;
-
-    private Boolean deleted;
-
-    private Integer version;
 
 }

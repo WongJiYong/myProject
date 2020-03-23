@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.RolesMenus;
 import com.xuersheng.myProject.model.example.RolesMenusExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface RolesMenusMapper {
+
     long countByExample(RolesMenusExample example);
 
     int deleteByExample(RolesMenusExample example);

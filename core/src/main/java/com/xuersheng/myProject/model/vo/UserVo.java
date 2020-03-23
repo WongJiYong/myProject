@@ -1,6 +1,5 @@
 package com.xuersheng.myProject.model.vo;
 
-import com.xuersheng.myProject.model.Role;
 import com.xuersheng.myProject.model.UserSetting;
 import lombok.Getter;
 import lombok.Setter;

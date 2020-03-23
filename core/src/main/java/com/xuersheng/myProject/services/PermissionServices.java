@@ -1,7 +1,7 @@
 package com.xuersheng.myProject.services;
 
 import com.xuersheng.myProject.db.DataSource;
-import com.xuersheng.myProject.mapper.cus.PermissionMapper;
+import com.xuersheng.myProject.mapper.PermissionMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

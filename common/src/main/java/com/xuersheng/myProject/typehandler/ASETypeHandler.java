@@ -3,22 +3,15 @@ package com.xuersheng.myProject.typehandler;
 import com.xuersheng.myProject.exception.AlgorithmException;
 import com.xuersheng.myProject.util.AESUtils;
 import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.MappedJdbcTypes;
-import org.apache.ibatis.type.MappedTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Base64;
 
 
-@MappedTypes(String.class)
-@MappedJdbcTypes(JdbcType.VARCHAR)
-public class ASETypeHandler extends org.apache.ibatis.type.BaseTypeHandler {
+public class ASETypeHandler extends org.apache.ibatis.type.BaseTypeHandler<String> {
 
     @Value("${ASE.KEY}")
     private String key;
@@ -27,18 +20,14 @@ public class ASETypeHandler extends org.apache.ibatis.type.BaseTypeHandler {
 
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {
-        if (parameter instanceof String) {
-            try {
-                byte[] bytes = AESUtils.encryptText((String) parameter, key);
-                String s = Base64.getEncoder().encodeToString(bytes);
-                ps.setString(i, s);
-            } catch (AlgorithmException e) {
-                logger.error("加密异常", e);
-                throw new SQLException("加密异常");
-            }
-        } else {
-            throw new SQLException("数据类型应为String. 不是" + parameter.getClass());
+    public void setNonNullParameter(PreparedStatement ps, int i, String parameter, JdbcType jdbcType) throws SQLException {
+        try {
+            byte[] bytes = AESUtils.encryptText(parameter, key);
+            String s = Base64.getEncoder().encodeToString(bytes);
+            ps.setString(i, s);
+        } catch (AlgorithmException e) {
+            logger.error("加密异常", e);
+            throw new SQLException("加密异常");
         }
     }
 

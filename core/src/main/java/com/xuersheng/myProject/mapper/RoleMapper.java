@@ -2,11 +2,12 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.Role;
 import com.xuersheng.myProject.model.example.RoleExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import com.xuersheng.myProject.model.dto.RoleDto;
 
 public interface RoleMapper {
+
     long countByExample(RoleExample example);
 
     int deleteByExample(RoleExample example);
@@ -28,4 +29,8 @@ public interface RoleMapper {
     int updateByPrimaryKeySelective(Role record);
 
     int updateByPrimaryKey(Role record);
+
+    int countActionsByRole(@Param("roleIds") List<Long> roleIds, @Param("path") String path);
+
+    List<Role> selectRoles(RoleDto roleDto);
 }

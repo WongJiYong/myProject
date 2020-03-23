@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.Dept;
 import com.xuersheng.myProject.model.example.DeptExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DeptMapper {
+
     long countByExample(DeptExample example);
 
     int deleteByExample(DeptExample example);

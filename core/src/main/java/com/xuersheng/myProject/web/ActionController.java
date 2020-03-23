@@ -22,25 +22,25 @@ public class ActionController {
     ActionServices actionServices;
 
     @PostMapping("query")
-    public ResponseEntity queryActions(@RequestBody ActionDto actionDto) {
+    public ResponseEntity<Object> queryActions(@RequestBody ActionDto actionDto) {
         List<ActionVo> menus = actionServices.queryActions(actionDto);
         return success(menus);
     }
 
     @PostMapping("add")
-    public ResponseEntity addAction(@RequestBody ActionDto actionDto) {
+    public ResponseEntity<Object> addAction(@RequestBody ActionDto actionDto) {
         return actionServices.addAction(actionDto) ?
                 success(actionDto.getId()) : error(ADD_ERROR);
     }
 
     @PostMapping("modify")
-    public ResponseEntity Action(@RequestBody ActionDto actionDto) {
+    public ResponseEntity<Object> Action(@RequestBody ActionDto actionDto) {
         return actionServices.modifyAction(actionDto) ?
                 success() : error(MODIFY_ERROR);
     }
 
     @PostMapping("remove")
-    public ResponseEntity removeAction(@RequestBody ActionDto actionDto) {
+    public ResponseEntity<Object> removeAction(@RequestBody ActionDto actionDto) {
         return actionServices.removeAction(actionDto) ?
                 success() : error(REMOVE_ERROR);
     }

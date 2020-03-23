@@ -3,11 +3,14 @@ package com.xuersheng.myProject.aop;
 import com.xuersheng.myProject.ThreadBox;
 import com.xuersheng.myProject.db.DataSource;
 import com.xuersheng.myProject.db.DataSourcesRouter;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -17,6 +20,8 @@ import java.util.Map;
 
 @Aspect
 @Component
+@Slf4j
+@Order(Ordered.LOWEST_PRECEDENCE - 100)
 public class DatabaseAop {
 
     @Resource(name = "routerMap")
@@ -60,5 +65,6 @@ public class DatabaseAop {
             }
         }
     }
+
 
 }

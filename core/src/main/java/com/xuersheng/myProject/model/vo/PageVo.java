@@ -7,11 +7,11 @@ import java.util.List;
 
 @Setter
 @Getter
-public class PageVo {
+public class PageVo<T> {
 
     private long total;
 
     private int pageNum;
 
-    private List<?> data;
+    private List<T> data;
 }

@@ -3,7 +3,6 @@ package com.xuersheng.myProject.services;
 import com.xuersheng.myProject.db.DataSource;
 import com.xuersheng.myProject.mapper.ActionMapper;
 import com.xuersheng.myProject.mapper.MenuMapper;
-import com.xuersheng.myProject.mapper.cus.MenuCusMapper;
 import com.xuersheng.myProject.model.Menu;
 import com.xuersheng.myProject.model.dto.MenuDto;
 import com.xuersheng.myProject.model.example.ActionExample;
@@ -19,10 +18,8 @@ import java.util.List;
 
 @Service
 @DataSource("default")
+@Transactional
 public class MenuServices {
-
-    @Resource
-    MenuCusMapper menuCusMapper;
 
     @Resource
     MenuMapper menuMapper;
@@ -36,7 +33,7 @@ public class MenuServices {
      * @return 可用菜单和请求
      */
     public List<MenuVo> queryMenusByRoleId(Long roleId) {
-        List<Menu> menus = menuCusMapper.selectMenusByRoleId(roleId);
+        List<Menu> menus = menuMapper.selectMenusByRoleId(roleId);
         return BeanUtils.copyListDeeply(menus, MenuVo.class);
     }
 
@@ -47,11 +44,10 @@ public class MenuServices {
      * @return 菜单和请求
      */
     public List<MenuVo> queryMenus(MenuDto menuDto) {
-        List<Menu> menus = menuCusMapper.selectMenus();
+        List<Menu> menus = menuMapper.selectMenus();
         return BeanUtils.copyListDeeply(menus, MenuVo.class);
     }
 
-    @Transactional
     public boolean addMenu(MenuDto menuDto) {
         Menu menu = new Menu();
         BeanUtils.copyPropertiesDeeply(menuDto, menu);
@@ -62,14 +58,12 @@ public class MenuServices {
         return 1 == menuMapper.insertSelective(menu);
     }
 
-    @Transactional
     public boolean modifyMenu(MenuDto menuDto) {
         Menu menu = new Menu();
         BeanUtils.copyPropertiesDeeply(menuDto, menu);
         return updateMenuByVersion(menu);
     }
 
-    @Transactional
     public boolean removeMenu(MenuDto menuDto) {
         Menu menu = new Menu();
         //数据校验

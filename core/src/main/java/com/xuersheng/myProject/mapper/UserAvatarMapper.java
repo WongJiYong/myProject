@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.UserAvatar;
 import com.xuersheng.myProject.model.example.UserAvatarExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserAvatarMapper {
+
     long countByExample(UserAvatarExample example);
 
     int deleteByExample(UserAvatarExample example);

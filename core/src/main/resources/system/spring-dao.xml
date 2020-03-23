@@ -4,10 +4,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
+
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="multiDataSource"/>
+        <property name="defaultTimeout" value="60"/>
+        <property name="rollbackOnCommitFailure" value="true"/>
+        <property name="globalRollbackOnParticipationFailure" value="true"/>
+    </bean>
+
     <bean class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="multiDataSource"/>
-        <property name="mapperLocations" value="classpath:system/sqlMapper/**/*Mapper.xml"/>
-        <property name="typeHandlersPackage" value="com.ztesoft.*.typehandler"/>
+        <property name="mapperLocations" value="classpath:sqlMapper/**/*Mapper.xml"/>
         <property name="configuration">
             <bean class="org.apache.ibatis.session.Configuration">
                 <!-- 其他mybatis 配置项-->
@@ -17,6 +24,7 @@
             </bean>
         </property>
     </bean>
+
     <bean id="multiDataSource" class="com.xuersheng.myProject.db.MultiDataSource">
         <property name="targetDataSources">
             <map>
@@ -35,7 +43,7 @@
     </bean>
     <bean id="serverDataSources" parent="mysqlDruidDataSource">
         <property name="name" value="serverDataSources"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/server_management?serverTimezone=UTC"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/myProject"/>
         <property name="username" value="root"/>
         <property name="password" value="root"/>
     </bean>

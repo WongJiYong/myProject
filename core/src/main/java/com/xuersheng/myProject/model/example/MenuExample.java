@@ -12,7 +12,7 @@ public class MenuExample {
     protected List<Criteria> oredCriteria;
 
     public MenuExample() {
-        oredCriteria = new ArrayList<Criteria>();
+        oredCriteria = new ArrayList<>();
     }
 
     public void setOrderByClause(String orderByClause) {
@@ -64,12 +64,17 @@ public class MenuExample {
         distinct = false;
     }
 
+    /**
+     * table: menu
+     *
+     * @mbg.generated
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
-            criteria = new ArrayList<Criterion>();
+            criteria = new ArrayList<>();
         }
 
         public boolean isValid() {
@@ -1126,13 +1131,22 @@ public class MenuExample {
         }
     }
 
+    /**
+     * table: menu
+     *
+     * @mbg.generated do_not_delete_during_merge
+     */
     public static class Criteria extends GeneratedCriteria {
-
         protected Criteria() {
             super();
         }
     }
 
+    /**
+     * table: menu
+     *
+     * @mbg.generated
+     */
     public static class Criterion {
         private String condition;
 

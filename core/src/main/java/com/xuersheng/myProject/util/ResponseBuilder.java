@@ -14,12 +14,12 @@ public abstract class ResponseBuilder {
      * @param body 失败请求返回信息
      * @return ResponseEntity
      */
-    public static ResponseEntity error(Object body) {
+    public static ResponseEntity<Object> error(Object body) {
         ResultVo<Object> vo = new ResultVo<>(false, HttpStatus.BAD_REQUEST.value(), body);
         return new ResponseEntity<>(vo, HttpStatus.BAD_REQUEST);
     }
 
-    public static ResponseEntity error() {
+    public static ResponseEntity<Object> error() {
         return error(null);
     }
 
@@ -27,12 +27,12 @@ public abstract class ResponseBuilder {
      * @param body 成功请求返回信息
      * @return ResponseEntity
      */
-    public static ResponseEntity success(Object body) {
+    public static ResponseEntity<Object> success(Object body) {
         ResultVo<Object> vo = new ResultVo<>(true, HttpStatus.OK.value(), body);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
-    public static ResponseEntity success() {
+    public static ResponseEntity<Object> success() {
         return success(null);
     }
 }

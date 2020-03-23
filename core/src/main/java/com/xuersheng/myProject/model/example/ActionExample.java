@@ -11,7 +11,7 @@ public class ActionExample {
     protected List<Criteria> oredCriteria;
 
     public ActionExample() {
-        oredCriteria = new ArrayList<Criteria>();
+        oredCriteria = new ArrayList<>();
     }
 
     public void setOrderByClause(String orderByClause) {
@@ -63,12 +63,17 @@ public class ActionExample {
         distinct = false;
     }
 
+    /**
+     * table: action
+     *
+     * @mbg.generated
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
-            criteria = new ArrayList<Criterion>();
+            criteria = new ArrayList<>();
         }
 
         public boolean isValid() {
@@ -735,13 +740,22 @@ public class ActionExample {
         }
     }
 
+    /**
+     * table: action
+     *
+     * @mbg.generated do_not_delete_during_merge
+     */
     public static class Criteria extends GeneratedCriteria {
-
         protected Criteria() {
             super();
         }
     }
 
+    /**
+     * table: action
+     *
+     * @mbg.generated
+     */
     public static class Criterion {
         private String condition;
 

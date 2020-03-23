@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuersheng.myProject.mapper.LocalStorageMapper">
+  <resultMap id="BaseResultMap" type="com.xuersheng.myProject.model.LocalStorage">
+    <id column="ls_id" jdbcType="BIGINT" property="id" />
+    <result column="ls_real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="ls_name" jdbcType="VARCHAR" property="name" />
+    <result column="ls_suffix" jdbcType="VARCHAR" property="suffix" />
+    <result column="ls_path" jdbcType="VARCHAR" property="path" />
+    <result column="ls_type" jdbcType="VARCHAR" property="type" />
+    <result column="ls_size" jdbcType="VARCHAR" property="size" />
+    <result column="ls_operate" jdbcType="VARCHAR" property="operate" />
+    <result column="ls_create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="ls_deleted" jdbcType="BIT" property="deleted" />
+    <result column="ls_version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ls.id as ls_id, ls.real_name as ls_real_name, ls.name as ls_name, ls.suffix as ls_suffix, 
+    ls.path as ls_path, ls.type as ls_type, ls.size as ls_size, ls.operate as ls_operate, 
+    ls.create_time as ls_create_time, ls.deleted as ls_deleted, ls.version as ls_version
+  </sql>
+  <select id="selectByExample" parameterType="com.xuersheng.myProject.model.example.LocalStorageExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from local_storage ls
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from local_storage ls
+    where ls.id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from local_storage
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xuersheng.myProject.model.example.LocalStorageExample">
+    delete from local_storage ls
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xuersheng.myProject.model.LocalStorage">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into local_storage (real_name, name, suffix, 
+      path, type, size, operate, 
+      create_time, deleted, version
+      )
+    values (#{realName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{suffix,jdbcType=VARCHAR}, 
+      #{path,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR}, #{operate,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, #{version,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xuersheng.myProject.model.LocalStorage">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into local_storage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="realName != null">
+        real_name,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="suffix != null">
+        suffix,
+      </if>
+      <if test="path != null">
+        path,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="size != null">
+        size,
+      </if>
+      <if test="operate != null">
+        operate,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="suffix != null">
+        #{suffix,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="operate != null">
+        #{operate,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xuersheng.myProject.model.example.LocalStorageExample" resultType="java.lang.Long">
+    select count(*) from local_storage ls
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update local_storage ls
+    <set>
+      <if test="record.id != null">
+        ls.id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.realName != null">
+        ls.real_name = #{record.realName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        ls.name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suffix != null">
+        ls.suffix = #{record.suffix,jdbcType=VARCHAR},
+      </if>
+      <if test="record.path != null">
+        ls.path = #{record.path,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        ls.type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.size != null">
+        ls.size = #{record.size,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operate != null">
+        ls.operate = #{record.operate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        ls.create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleted != null">
+        ls.deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.version != null">
+        ls.version = #{record.version,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update local_storage ls
+    set ls.id = #{record.id,jdbcType=BIGINT},
+      ls.real_name = #{record.realName,jdbcType=VARCHAR},
+      ls.name = #{record.name,jdbcType=VARCHAR},
+      ls.suffix = #{record.suffix,jdbcType=VARCHAR},
+      ls.path = #{record.path,jdbcType=VARCHAR},
+      ls.type = #{record.type,jdbcType=VARCHAR},
+      ls.size = #{record.size,jdbcType=VARCHAR},
+      ls.operate = #{record.operate,jdbcType=VARCHAR},
+      ls.create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      ls.deleted = #{record.deleted,jdbcType=BIT},
+      ls.version = #{record.version,jdbcType=INTEGER}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xuersheng.myProject.model.LocalStorage">
+    update local_storage
+    <set>
+      <if test="realName != null">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="suffix != null">
+        suffix = #{suffix,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        size = #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="operate != null">
+        operate = #{operate,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xuersheng.myProject.model.LocalStorage">
+    update local_storage
+    set real_name = #{realName,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      suffix = #{suffix,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      size = #{size,jdbcType=VARCHAR},
+      operate = #{operate,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=BIT},
+      version = #{version,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

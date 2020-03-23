@@ -27,25 +27,25 @@ public class CatalogController {
     CatalogServices catalogServices;
 
     @PostMapping("query")
-    public ResponseEntity queryCatalog(@RequestBody CatalogDto dto) {
+    public ResponseEntity<Object> queryCatalog(@RequestBody CatalogDto dto) {
         List<CatalogVo> catalogVos = catalogServices.queryCatalog(dto);
         return success(catalogVos);
     }
 
     @PostMapping("modify")
-    public ResponseEntity modifyCatalog(@RequestBody CatalogDto dto) {
+    public ResponseEntity<Object> modifyCatalog(@RequestBody CatalogDto dto) {
         return catalogServices.modifyCatalog(dto) ?
                 success() : error(MODIFY_ERROR);
     }
 
     @PostMapping("add")
-    public ResponseEntity addCatalogNode(@RequestBody CatalogDto dto) {
+    public ResponseEntity<Object> addCatalogNode(@RequestBody CatalogDto dto) {
         return catalogServices.addCatalogNode(dto) ?
                 success() : error(ADD_ERROR);
     }
 
     @PostMapping("remove")
-    public ResponseEntity removeCatalogNode(@RequestBody CatalogDto dto) {
+    public ResponseEntity<Object> removeCatalogNode(@RequestBody CatalogDto dto) {
         return catalogServices.removeCatalogNode(dto) ?
                 success() : error(REMOVE_ERROR);
     }

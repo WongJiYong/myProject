@@ -6,17 +6,19 @@
 <generatorConfiguration>
 
     <classPathEntry
-            location="D:\maven_file\.m2\repository\mysql\mysql-connector-java\5.1.18\mysql-connector-java-5.1.18.jar"/>
+            location="C:\Users\dogEggEr\.IntelliJIdea2019.3\config\jdbc-drivers\MySQL Connector\J\5.1.47\mysql-connector-java-5.1.47.jar"/>
 
-    <context id="DB2Tables" targetRuntime="MyBatis3" defaultModelType="extra_flat">
-
-        <commentGenerator>
-            <property name="suppressAllComments" value="true"/>
+    <context id="DB2Tables" targetRuntime="MyBatis3" defaultModelType="FLAT">
+        <!-- 指定Java编码格式 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 使用自定义注释生成 -->
+        <commentGenerator type="org.mybatis.generator.internal.CustomCommentGenerator">
+            <property name="suppressAllComments" value="false"/>
             <property name="addRemarkComments" value="true"/>
+            <property name="suppressDate" value="true"/>
         </commentGenerator>
-
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/server_management"
+                        connectionURL="jdbc:mysql://localhost:3306/myProject"
                         userId="root"
                         password="root">
         </jdbcConnection>
@@ -25,44 +27,83 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.ztesoft.devops.system.model"
+        <javaModelGenerator targetPackage="com.xuersheng.myProject.model"
                             targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
+            <!-- 指定example生成包 -->
+            <property name="exampleTargetPackage" value="com.xuersheng.myProject.model.example"/>
+            <!-- 使用Lombok -->
+            <property name="useLombok" value="true"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="system.sqlMapper"
+        <sqlMapGenerator targetPackage="sqlMapper"
                          targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.ztesoft.devops.system.mapper"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.xuersheng.myProject.mapper"
                              targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-<!--        <table schema="server_management" tableName="action" alias="a"/>-->
-<!--        <table schema="server_management" tableName="catalog" alias="c"/>-->
-<!--        <table schema="server_management" tableName="dept" alias="d"/>-->
-<!--        <table schema="server_management" tableName="dict" alias="dic"/>-->
-<!--        <table schema="server_management" tableName="dict_detail" alias="dd"/>-->
-<!--        <table schema="server_management" tableName="email_config" alias="ec"/>-->
-<!--        <table schema="server_management" tableName="job" alias="j"/>-->
-<!--        <table schema="server_management" tableName="local_storage" alias="ls"/>-->
-<!--        <table schema="server_management" tableName="log" alias="l"/>-->
-<!--        <table schema="server_management" tableName="menu" alias="m"/>-->
-<!--        <table schema="server_management" tableName="picture" alias="p"/>-->
-<!--        <table schema="server_management" tableName="process_info" alias="pi"/>-->
-<!--        <table schema="server_management" tableName="role" alias="r"/>-->
-<!--        <table schema="server_management" tableName="roles_action" alias="ra"/>-->
-<!--        <table schema="server_management" tableName="roles_depts" alias="rd"/>-->
-<!--        <table schema="server_management" tableName="roles_menus" alias="rm"/>-->
-<!--        <table schema="server_management" tableName="server_info" alias="si"/>-->
-<!--        <table schema="server_management" tableName="user" alias="u"/>-->
-<!--        <table schema="server_management" tableName="user_avatar" alias="ua"/>-->
-<!--        <table schema="server_management" tableName="user_setting" alias="us"/>-->
-<!--        <table schema="server_management" tableName="users_roles" alias="ur"/>-->
-<!--        <table schema="server_management" tableName="verification_code" alias="vc"/>-->
+
+<!--        <table schema="myproject" tableName="action" alias="a">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="catalog" alias="c">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="dept" alias="d">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="dict" alias="dic">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="dict_detail" alias="dd">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="email_config" alias="ec">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="job" alias="j">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="local_storage" alias="ls">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="log" alias="l">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="menu" alias="m">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="picture" alias="p">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="process_info" alias="pi">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="role" alias="r">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="roles_action" alias="ra"/>-->
+
+<!--        <table schema="myproject" tableName="roles_depts" alias="rd" />-->
+<!--        <table schema="myproject" tableName="roles_menus" alias="rm" />-->
+<!--        <table schema="myproject" tableName="server_info" alias="si">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myProject" tableName="user" alias="u">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="user_avatar" alias="ua">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table schema="myproject" tableName="user_setting" alias="us" />-->
+<!--        <table schema="myproject" tableName="users_roles" alias="ur">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
 
     </context>
 </generatorConfiguration>

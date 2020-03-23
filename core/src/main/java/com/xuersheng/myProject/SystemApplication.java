@@ -7,13 +7,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication(scanBasePackages = "com.xuersheng")
-@MapperScan({"com.xuersheng.myProject.mapper","com.xuersheng.myProject.mapper.cus"})
+@MapperScan({"com.xuersheng.myProject.mapper"})
 @RestController("/")
 @EnableAspectJAutoProxy
+@EnableTransactionManagement
 public class SystemApplication {
 
     public static void main(String[] args) {
@@ -21,12 +23,12 @@ public class SystemApplication {
     }
 
     @GetMapping("/hello")
-    public ResponseEntity hello() {
+    public ResponseEntity<Object> hello() {
         return ResponseBuilder.success("you are authenticated");
     }
 
     @GetMapping("/csrf")
-    public ResponseEntity csrf(CsrfToken token) {
+    public ResponseEntity<Object> csrf(CsrfToken token) {
         return ResponseBuilder.success(token);
     }
 

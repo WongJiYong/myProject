@@ -5,11 +5,11 @@ import com.xuersheng.myProject.mapper.CatalogMapper;
 import com.xuersheng.myProject.mapper.ServerInfoMapper;
 import com.xuersheng.myProject.model.Catalog;
 import com.xuersheng.myProject.model.ServerInfo;
+import com.xuersheng.myProject.model.dto.CatalogDto;
 import com.xuersheng.myProject.model.example.CatalogExample;
 import com.xuersheng.myProject.model.example.ServerInfoExample;
-import com.xuersheng.myProject.util.BeanUtils;
-import com.xuersheng.myProject.model.dto.CatalogDto;
 import com.xuersheng.myProject.model.vo.CatalogVo;
+import com.xuersheng.myProject.util.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +18,7 @@ import java.util.List;
 
 @Service
 @DataSource("default")
+@Transactional
 public class CatalogServices {
 
 
@@ -36,21 +37,18 @@ public class CatalogServices {
         return BeanUtils.copyListDeeply(catalogs, CatalogVo.class);
     }
 
-    @Transactional
     public boolean modifyCatalog(CatalogDto dto) {
         Catalog catalog = new Catalog();
         BeanUtils.copyPropertiesDeeply(dto, catalog);
         return 1 == catalogMapper.updateByPrimaryKeySelective(catalog);
     }
 
-    @Transactional
     public boolean addCatalogNode(CatalogDto dto) {
         Catalog record = new Catalog();
         BeanUtils.copyPropertiesDeeply(dto, record);
         return 1 == catalogMapper.insert(record);
     }
 
-    @Transactional
     public boolean removeCatalogNode(CatalogDto dto) {
         //首先检查是否有子目录
         CatalogExample catalogExample = new CatalogExample();

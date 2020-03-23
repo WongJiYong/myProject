@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuersheng.myProject.mapper.ActionMapper">
+  <resultMap id="BaseResultMap" type="com.xuersheng.myProject.model.Action">
+    <id column="a_id" jdbcType="BIGINT" property="id" />
+    <result column="a_name" jdbcType="VARCHAR" property="name" />
+    <result column="a_menu_id" jdbcType="BIGINT" property="menuId" />
+    <result column="a_sort" jdbcType="BIGINT" property="sort" />
+    <result column="a_icon" jdbcType="VARCHAR" property="icon" />
+    <result column="a_path" jdbcType="VARCHAR" property="path" />
+    <result column="a_locked" jdbcType="BIT" property="locked" />
+    <result column="a_enabled" jdbcType="BIT" property="enabled" />
+    <result column="a_deleted" jdbcType="BIT" property="deleted" />
+    <result column="a_version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    a.id as a_id, a.name as a_name, a.menu_id as a_menu_id, a.sort as a_sort, a.icon as a_icon, 
+    a.path as a_path, a.locked as a_locked, a.enabled as a_enabled, a.deleted as a_deleted, 
+    a.version as a_version
+  </sql>
+  <select id="selectByExample" parameterType="com.xuersheng.myProject.model.example.ActionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from action a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from action a
+    where a.id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from action
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xuersheng.myProject.model.example.ActionExample">
+    delete from action a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xuersheng.myProject.model.Action">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into action (name, menu_id, sort, 
+      icon, path, locked, enabled, 
+      deleted, version)
+    values (#{name,jdbcType=VARCHAR}, #{menuId,jdbcType=BIGINT}, #{sort,jdbcType=BIGINT}, 
+      #{icon,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, #{locked,jdbcType=BIT}, #{enabled,jdbcType=BIT}, 
+      #{deleted,jdbcType=BIT}, #{version,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xuersheng.myProject.model.Action">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into action
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
+      <if test="menuId != null">
+        menu_id,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="path != null">
+        path,
+      </if>
+      <if test="locked != null">
+        locked,
+      </if>
+      <if test="enabled != null">
+        enabled,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null">
+        #{menuId,jdbcType=BIGINT},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=BIGINT},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="locked != null">
+        #{locked,jdbcType=BIT},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=BIT},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xuersheng.myProject.model.example.ActionExample" resultType="java.lang.Long">
+    select count(*) from action a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update action a
+    <set>
+      <if test="record.id != null">
+        a.id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null">
+        a.name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuId != null">
+        a.menu_id = #{record.menuId,jdbcType=BIGINT},
+      </if>
+      <if test="record.sort != null">
+        a.sort = #{record.sort,jdbcType=BIGINT},
+      </if>
+      <if test="record.icon != null">
+        a.icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.path != null">
+        a.path = #{record.path,jdbcType=VARCHAR},
+      </if>
+      <if test="record.locked != null">
+        a.locked = #{record.locked,jdbcType=BIT},
+      </if>
+      <if test="record.enabled != null">
+        a.enabled = #{record.enabled,jdbcType=BIT},
+      </if>
+      <if test="record.deleted != null">
+        a.deleted = #{record.deleted,jdbcType=BIT},
+      </if>
+      <if test="record.version != null">
+        a.version = #{record.version,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update action a
+    set a.id = #{record.id,jdbcType=BIGINT},
+      a.name = #{record.name,jdbcType=VARCHAR},
+      a.menu_id = #{record.menuId,jdbcType=BIGINT},
+      a.sort = #{record.sort,jdbcType=BIGINT},
+      a.icon = #{record.icon,jdbcType=VARCHAR},
+      a.path = #{record.path,jdbcType=VARCHAR},
+      a.locked = #{record.locked,jdbcType=BIT},
+      a.enabled = #{record.enabled,jdbcType=BIT},
+      a.deleted = #{record.deleted,jdbcType=BIT},
+      a.version = #{record.version,jdbcType=INTEGER}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xuersheng.myProject.model.Action">
+    update action
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null">
+        menu_id = #{menuId,jdbcType=BIGINT},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=BIGINT},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="locked != null">
+        locked = #{locked,jdbcType=BIT},
+      </if>
+      <if test="enabled != null">
+        enabled = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xuersheng.myProject.model.Action">
+    update action
+    set name = #{name,jdbcType=VARCHAR},
+      menu_id = #{menuId,jdbcType=BIGINT},
+      sort = #{sort,jdbcType=BIGINT},
+      icon = #{icon,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      locked = #{locked,jdbcType=BIT},
+      enabled = #{enabled,jdbcType=BIT},
+      deleted = #{deleted,jdbcType=BIT},
+      version = #{version,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

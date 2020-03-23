@@ -12,7 +12,7 @@ public class JobExample {
     protected List<Criteria> oredCriteria;
 
     public JobExample() {
-        oredCriteria = new ArrayList<Criteria>();
+        oredCriteria = new ArrayList<>();
     }
 
     public void setOrderByClause(String orderByClause) {
@@ -64,12 +64,17 @@ public class JobExample {
         distinct = false;
     }
 
+    /**
+     * table: job
+     *
+     * @mbg.generated
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
-            criteria = new ArrayList<Criterion>();
+            criteria = new ArrayList<>();
         }
 
         public boolean isValid() {
@@ -596,13 +601,22 @@ public class JobExample {
         }
     }
 
+    /**
+     * table: job
+     *
+     * @mbg.generated do_not_delete_during_merge
+     */
     public static class Criteria extends GeneratedCriteria {
-
         protected Criteria() {
             super();
         }
     }
 
+    /**
+     * table: job
+     *
+     * @mbg.generated
+     */
     public static class Criterion {
         private String condition;
 

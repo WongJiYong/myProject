@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.Catalog;
 import com.xuersheng.myProject.model.example.CatalogExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface CatalogMapper {
+
     long countByExample(CatalogExample example);
 
     int deleteByExample(CatalogExample example);

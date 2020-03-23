@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.LocalStorage;
 import com.xuersheng.myProject.model.example.LocalStorageExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface LocalStorageMapper {
+
     long countByExample(LocalStorageExample example);
 
     int deleteByExample(LocalStorageExample example);

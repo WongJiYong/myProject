@@ -24,49 +24,49 @@ public class RoleController {
     RoleServices roleServices;
 
     @GetMapping("query")
-    public ResponseEntity queryRoles(@RequestBody(required = false) RoleDto roleDto) {
+    public ResponseEntity<Object> queryRoles(@RequestBody(required = false) RoleDto roleDto) {
         List<RoleVo> menus = roleServices.queryRolesAndActionIdsAndMenuIds(roleDto);
         return ResponseBuilder.success(menus);
     }
 
     @PostMapping("add")
-    public ResponseEntity addRole(@RequestBody RoleDto roleDto) {
+    public ResponseEntity<Object> addRole(@RequestBody RoleDto roleDto) {
         return roleServices.addRole(roleDto) ?
                 ResponseBuilder.success() : ResponseBuilder.error(ResponseBuilder.ADD_ERROR);
     }
 
     @PostMapping("modify")
-    public ResponseEntity modifyRole(@RequestBody RoleDto roleDto) {
+    public ResponseEntity<Object> modifyRole(@RequestBody RoleDto roleDto) {
         return roleServices.modifyRole(roleDto)
                 ? ResponseBuilder.success() : ResponseBuilder.error(ResponseBuilder.MODIFY_ERROR);
     }
 
     @PostMapping("remove")
-    public ResponseEntity removeRole(@RequestBody RoleDto roleDto) {
+    public ResponseEntity<Object> removeRole(@RequestBody RoleDto roleDto) {
         return roleServices.removeRole(roleDto)
                 ? ResponseBuilder.success() : ResponseBuilder.error(ResponseBuilder.REMOVE_ERROR);
     }
 
     @PostMapping("action/add")
-    public ResponseEntity addAction(@RequestBody RoleActionDto dto) {
+    public ResponseEntity<Object> addAction(@RequestBody RoleActionDto dto) {
         return roleServices.addAction(dto)
                 ? ResponseBuilder.success() : ResponseBuilder.error(ResponseBuilder.ADD_ERROR);
     }
 
     @PostMapping("action/remove")
-    public ResponseEntity removeAction(@RequestBody RoleActionDto dto) {
+    public ResponseEntity<Object> removeAction(@RequestBody RoleActionDto dto) {
         return roleServices.removeAction(dto)
                 ? ResponseBuilder.success() : ResponseBuilder.error(ResponseBuilder.REMOVE_ERROR);
     }
 
     @PostMapping("menu/add")
-    public ResponseEntity addMenu(@RequestBody RoleMenuDto dto) {
+    public ResponseEntity<Object> addMenu(@RequestBody RoleMenuDto dto) {
         return roleServices.addMenu(dto)
                 ? ResponseBuilder.success() : ResponseBuilder.error(ResponseBuilder.ADD_ERROR);
     }
 
     @PostMapping("menu/remove")
-    public ResponseEntity removeMenu(@RequestBody RoleMenuDto dto) {
+    public ResponseEntity<Object> removeMenu(@RequestBody RoleMenuDto dto) {
         return roleServices.removeMenu(dto)
                 ? ResponseBuilder.success() : ResponseBuilder.error(ResponseBuilder.REMOVE_ERROR);
     }

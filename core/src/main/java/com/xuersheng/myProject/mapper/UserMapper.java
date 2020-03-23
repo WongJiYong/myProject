@@ -2,11 +2,12 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.User;
 import com.xuersheng.myProject.model.example.UserExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import com.xuersheng.myProject.model.dto.UserDto;
 
 public interface UserMapper {
+
     long countByExample(UserExample example);
 
     int deleteByExample(UserExample example);
@@ -28,4 +29,8 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    User selectUserDetailById(Long id);
+
+    List<User> selectUserByDto(UserDto userDto);
 }

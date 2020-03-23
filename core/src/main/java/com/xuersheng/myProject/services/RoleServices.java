@@ -1,10 +1,10 @@
 package com.xuersheng.myProject.services;
 
 import com.xuersheng.myProject.db.DataSource;
+import com.xuersheng.myProject.mapper.PermissionMapper;
 import com.xuersheng.myProject.mapper.RoleMapper;
 import com.xuersheng.myProject.mapper.RolesActionMapper;
 import com.xuersheng.myProject.mapper.RolesMenusMapper;
-import com.xuersheng.myProject.mapper.cus.PermissionMapper;
 import com.xuersheng.myProject.model.Role;
 import com.xuersheng.myProject.model.RolesAction;
 import com.xuersheng.myProject.model.RolesMenus;
@@ -25,6 +25,7 @@ import java.util.List;
 
 @Service
 @DataSource("default")
+@Transactional
 public class RoleServices {
 
     @Resource
@@ -45,7 +46,6 @@ public class RoleServices {
     }
 
 
-    @Transactional
     public boolean addRole(RoleDto roleDto) {
         Role role = new Role();
         role.setId(null);
@@ -56,14 +56,12 @@ public class RoleServices {
         return 1 == roleMapper.insert(role);
     }
 
-    @Transactional
     public boolean modifyRole(RoleDto roleDto) {
         Role role = new Role();
         BeanUtils.copyPropertiesDeeply(roleDto, role);
         return updateRoleByVersion(role);
     }
 
-    @Transactional
     public boolean removeRole(RoleDto roleDto) {
         Long roleId = roleDto.getId();
         //检查数据库外键关系
@@ -90,7 +88,6 @@ public class RoleServices {
         return updateRoleByVersion(role);
     }
 
-    @Transactional
     public boolean addAction(RoleActionDto dto) {
         RolesAction rolesAction = new RolesAction();
         BeanUtils.copyPropertiesDeeply(dto, rolesAction);

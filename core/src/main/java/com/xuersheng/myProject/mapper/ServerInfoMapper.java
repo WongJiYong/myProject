@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.ServerInfo;
 import com.xuersheng.myProject.model.example.ServerInfoExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface ServerInfoMapper {
+
     long countByExample(ServerInfoExample example);
 
     int deleteByExample(ServerInfoExample example);

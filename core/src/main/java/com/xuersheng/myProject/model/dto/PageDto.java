@@ -7,19 +7,20 @@ public class PageDto {
     private Integer currentPage;
 
     public Integer getCurrentPage() {
+        if (currentPage == null || currentPage < 1) {
+            return 1;
+        }
         return currentPage;
     }
 
-    public Integer startIndex(){
-        if (currentPage==null || currentPage < 1){
-            currentPage = 1;
-        }
-        return  (currentPage - 1) * getPageSize();
-    };
+    public Integer startIndex() {
+        return (getCurrentPage() - 1) * getPageSize();
+    }
+
 
     public Integer getPageSize() {
-        if (pageSize == null || pageSize < 1){
-            pageSize = 10;
+        if (pageSize == null || pageSize < 1) {
+            pageSize = 20;
         }
         return pageSize;
     }

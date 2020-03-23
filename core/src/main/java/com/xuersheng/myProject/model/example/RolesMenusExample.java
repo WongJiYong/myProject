@@ -11,7 +11,7 @@ public class RolesMenusExample {
     protected List<Criteria> oredCriteria;
 
     public RolesMenusExample() {
-        oredCriteria = new ArrayList<Criteria>();
+        oredCriteria = new ArrayList<>();
     }
 
     public void setOrderByClause(String orderByClause) {
@@ -63,12 +63,17 @@ public class RolesMenusExample {
         distinct = false;
     }
 
+    /**
+     * table: roles_menus
+     *
+     * @mbg.generated
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
-            criteria = new ArrayList<Criterion>();
+            criteria = new ArrayList<>();
         }
 
         public boolean isValid() {
@@ -285,13 +290,22 @@ public class RolesMenusExample {
         }
     }
 
+    /**
+     * table: roles_menus
+     *
+     * @mbg.generated do_not_delete_during_merge
+     */
     public static class Criteria extends GeneratedCriteria {
-
         protected Criteria() {
             super();
         }
     }
 
+    /**
+     * table: roles_menus
+     *
+     * @mbg.generated
+     */
     public static class Criterion {
         private String condition;
 

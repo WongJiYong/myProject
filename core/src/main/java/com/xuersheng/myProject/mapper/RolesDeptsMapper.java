@@ -2,11 +2,11 @@ package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.RolesDepts;
 import com.xuersheng.myProject.model.example.RolesDeptsExample;
-
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface RolesDeptsMapper {
+
     long countByExample(RolesDeptsExample example);
 
     int deleteByExample(RolesDeptsExample example);
