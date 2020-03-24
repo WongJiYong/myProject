@@ -1,11 +1,10 @@
 package com.xuersheng.myProject.util;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.Assert;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
@@ -15,14 +14,25 @@ public class TestUtil {
 
     public static <T> T randomObject(Class<T> clazz, String... fields) {
         try {
+            assert fields != null;
+            PropertyDescriptor[] propertyDescriptors;
+            if (fields.length < 1) {
+                propertyDescriptors = BeanUtils.getPropertyDescriptors(clazz);
+            } else {
+                PropertyDescriptor[] t = new PropertyDescriptor[fields.length];
+                for (int i = 0; i < fields.length; i++) {
+                    t[i] = BeanUtils.getPropertyDescriptor(clazz, fields[i]);
+                }
+                propertyDescriptors = t;
+            }
             T obj = BeanUtils.instantiateClass(clazz);
-            for (String f : fields) {
-                PropertyDescriptor propertyDescriptor = BeanUtils.getPropertyDescriptor(clazz, f);
-                Assert.notNull(propertyDescriptor, "fields:" + f);
+            for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
                 Class<?> type = propertyDescriptor.getPropertyType();
                 Object o = randomValue(type);
-                Method writeMethod = propertyDescriptor.getWriteMethod();
-                writeMethod.invoke(obj, o);
+                if (o != null) {
+                    Method writeMethod = propertyDescriptor.getWriteMethod();
+                    writeMethod.invoke(obj, o);
+                }
             }
             return obj;
         } catch (Exception e) {
@@ -40,8 +50,10 @@ public class TestUtil {
             return new Random().nextInt();
         } else if (type.equals(Boolean.class)) {
             return new Random().nextBoolean();
+        } else if (type.equals(Date.class)) {
+            return new Date();
         }
-        throw new RuntimeException("unknown type");
+        return null;
     }
 
     public static boolean equalsObjs(Object obj1, Object obj2, String... fields) {

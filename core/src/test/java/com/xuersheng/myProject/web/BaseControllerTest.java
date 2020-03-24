@@ -7,7 +7,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,10 +17,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.IOException;
+import java.util.Objects;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -48,8 +52,6 @@ public abstract class BaseControllerTest {
      */
     @Before
     public void beforeEachTestMethod() throws Exception {
-        log.error("设置默认的数据源路由编码");
-        ThreadBox.setDatasourceKey("default");
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .apply(springSecurity())
@@ -61,11 +63,22 @@ public abstract class BaseControllerTest {
                 .with(user("admin").roles("admin"))
                 .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
+        log.info("hello world");
     }
 
     @After
     public void after() {
 
+    }
+
+    protected void send(String url, Object jsonObj) throws Exception {
+        this.mvc.perform(
+                post(url)
+                        .with(csrf().asHeader())
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(json.write(jsonObj).getJson())
+                        .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
     }
 
 }
