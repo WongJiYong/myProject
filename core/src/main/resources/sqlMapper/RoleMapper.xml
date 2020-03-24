@@ -2,15 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xuersheng.myProject.mapper.RoleMapper">
   <resultMap id="BaseResultMap" type="com.xuersheng.myProject.model.Role">
-    <id column="r_id" jdbcType="BIGINT" property="id" />
-    <result column="r_name" jdbcType="VARCHAR" property="name" />
-    <result column="r_remark" jdbcType="VARCHAR" property="remark" />
-    <result column="r_data_scope" jdbcType="VARCHAR" property="dataScope" />
-    <result column="r_level" jdbcType="INTEGER" property="level" />
-    <result column="r_create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="r_permission" jdbcType="VARCHAR" property="permission" />
-    <result column="r_deleted" jdbcType="BIT" property="deleted" />
-    <result column="r_version" jdbcType="INTEGER" property="version" />
+    <id column="r_id" jdbcType="BIGINT" property="id"/>
+    <result column="r_name" jdbcType="VARCHAR" property="name"/>
+    <result column="r_code" jdbcType="VARCHAR" property="code"/>
+    <result column="r_remark" jdbcType="VARCHAR" property="remark"/>
+    <result column="r_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="r_locked" jdbcType="BIT" property="locked"/>
+    <result column="r_deleted" jdbcType="BIT" property="deleted"/>
+    <result column="r_version" jdbcType="INTEGER" property="version"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,50 +70,51 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    r.id as r_id, r.name as r_name, r.remark as r_remark, r.data_scope as r_data_scope, 
-    r.level as r_level, r.create_time as r_create_time, r.permission as r_permission, 
-    r.deleted as r_deleted, r.version as r_version
+    r.id as r_id, r.name as r_name, r.code as r_code, r.remark as r_remark, r.create_time as r_create_time, 
+    r.locked as r_locked, r.deleted as r_deleted, r.version as r_version
   </sql>
-  <select id="selectByExample" parameterType="com.xuersheng.myProject.model.example.RoleExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.xuersheng.myProject.model.example.RoleExample"
+          resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List"/>
     from role r
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="Example_Where_Clause"/>
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
+    select
+    <include refid="Base_Column_List"/>
     from role r
     where r.id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from role
+    delete
+    from role
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="com.xuersheng.myProject.model.example.RoleExample">
     delete from role r
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="Example_Where_Clause"/>
     </if>
   </delete>
   <insert id="insert" parameterType="com.xuersheng.myProject.model.Role">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into role (name, remark, data_scope, 
-      level, create_time, permission, 
-      deleted, version)
-    values (#{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{dataScope,jdbcType=VARCHAR}, 
-      #{level,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{permission,jdbcType=VARCHAR}, 
-      #{deleted,jdbcType=BIT}, #{version,jdbcType=INTEGER})
+    insert into role (name, code, remark,
+    create_time, locked, deleted,
+    version)
+    values (#{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+    #{createTime,jdbcType=TIMESTAMP}, #{locked,jdbcType=BIT}, #{deleted,jdbcType=BIT},
+    #{version,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.xuersheng.myProject.model.Role">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -125,20 +125,17 @@
       <if test="name != null">
         name,
       </if>
+      <if test="code != null">
+        code,
+      </if>
       <if test="remark != null">
         remark,
-      </if>
-      <if test="dataScope != null">
-        data_scope,
-      </if>
-      <if test="level != null">
-        level,
       </if>
       <if test="createTime != null">
         create_time,
       </if>
-      <if test="permission != null">
-        permission,
+      <if test="locked != null">
+        locked,
       </if>
       <if test="deleted != null">
         deleted,
@@ -151,20 +148,17 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="dataScope != null">
-        #{dataScope,jdbcType=VARCHAR},
-      </if>
-      <if test="level != null">
-        #{level,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="permission != null">
-        #{permission,jdbcType=VARCHAR},
+      <if test="locked != null">
+        #{locked,jdbcType=BIT},
       </if>
       <if test="deleted != null">
         #{deleted,jdbcType=BIT},
@@ -174,10 +168,11 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.xuersheng.myProject.model.example.RoleExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.xuersheng.myProject.model.example.RoleExample"
+          resultType="java.lang.Long">
     select count(*) from role r
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="Example_Where_Clause"/>
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
@@ -189,20 +184,17 @@
       <if test="record.name != null">
         r.name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.code != null">
+        r.code = #{record.code,jdbcType=VARCHAR},
+      </if>
       <if test="record.remark != null">
         r.remark = #{record.remark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.dataScope != null">
-        r.data_scope = #{record.dataScope,jdbcType=VARCHAR},
-      </if>
-      <if test="record.level != null">
-        r.level = #{record.level,jdbcType=INTEGER},
       </if>
       <if test="record.createTime != null">
         r.create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.permission != null">
-        r.permission = #{record.permission,jdbcType=VARCHAR},
+      <if test="record.locked != null">
+        r.locked = #{record.locked,jdbcType=BIT},
       </if>
       <if test="record.deleted != null">
         r.deleted = #{record.deleted,jdbcType=BIT},
@@ -212,22 +204,21 @@
       </if>
     </set>
     <if test="example != null">
-      <include refid="Update_By_Example_Where_Clause" />
+      <include refid="Update_By_Example_Where_Clause"/>
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
     update role r
     set r.id = #{record.id,jdbcType=BIGINT},
-      r.name = #{record.name,jdbcType=VARCHAR},
-      r.remark = #{record.remark,jdbcType=VARCHAR},
-      r.data_scope = #{record.dataScope,jdbcType=VARCHAR},
-      r.level = #{record.level,jdbcType=INTEGER},
-      r.create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      r.permission = #{record.permission,jdbcType=VARCHAR},
-      r.deleted = #{record.deleted,jdbcType=BIT},
-      r.version = #{record.version,jdbcType=INTEGER}
+    r.name = #{record.name,jdbcType=VARCHAR},
+    r.code = #{record.code,jdbcType=VARCHAR},
+    r.remark = #{record.remark,jdbcType=VARCHAR},
+    r.create_time = #{record.createTime,jdbcType=TIMESTAMP},
+    r.locked = #{record.locked,jdbcType=BIT},
+    r.deleted = #{record.deleted,jdbcType=BIT},
+    r.version = #{record.version,jdbcType=INTEGER}
     <if test="example != null">
-      <include refid="Update_By_Example_Where_Clause" />
+      <include refid="Update_By_Example_Where_Clause"/>
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.xuersheng.myProject.model.Role">
@@ -236,20 +227,17 @@
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="dataScope != null">
-        data_scope = #{dataScope,jdbcType=VARCHAR},
-      </if>
-      <if test="level != null">
-        level = #{level,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="permission != null">
-        permission = #{permission,jdbcType=VARCHAR},
+      <if test="locked != null">
+        locked = #{locked,jdbcType=BIT},
       </if>
       <if test="deleted != null">
         deleted = #{deleted,jdbcType=BIT},
@@ -262,31 +250,33 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.xuersheng.myProject.model.Role">
     update role
-    set name = #{name,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
-      data_scope = #{dataScope,jdbcType=VARCHAR},
-      level = #{level,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      permission = #{permission,jdbcType=VARCHAR},
-      deleted = #{deleted,jdbcType=BIT},
-      version = #{version,jdbcType=INTEGER}
+    set name        = #{name,jdbcType=VARCHAR},
+        code        = #{code,jdbcType=VARCHAR},
+        remark      = #{remark,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        locked      = #{locked,jdbcType=BIT},
+        deleted     = #{deleted,jdbcType=BIT},
+        version     = #{version,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <resultMap extends="com.xuersheng.myProject.mapper.MenuMapper.BaseResultMap" id="MenusAction" type="com.xuersheng.myProject.model.Menu">
-    <collection column="m_id" foreignColumn="a_menu_id" ofType="com.xuersheng.myProject.model.Action" property="actions" resultMap="com.xuersheng.myProject.mapper.ActionMapper.BaseResultMap">
+  <resultMap extends="com.xuersheng.myProject.mapper.MenuMapper.BaseResultMap" id="MenusAction"
+             type="com.xuersheng.myProject.model.Menu">
+    <collection column="m_id" foreignColumn="a_menu_id" ofType="com.xuersheng.myProject.model.Action" property="actions"
+                resultMap="com.xuersheng.myProject.mapper.ActionMapper.BaseResultMap">
     </collection>
   </resultMap>
 
-  <resultMap extends="com.xuersheng.myProject.mapper.RoleMapper.BaseResultMap" id="RolesMap" type="com.xuersheng.myProject.model.Role">
+  <resultMap extends="com.xuersheng.myProject.mapper.RoleMapper.BaseResultMap" id="RolesMap"
+             type="com.xuersheng.myProject.model.Role">
     <collection ofType="java.lang.Long" property="menuIds">
       <constructor>
-        <arg column="menu_id" />
+        <arg column="menu_id"/>
       </constructor>
     </collection>
     <collection ofType="java.lang.Long" property="actionIds">
       <constructor>
-        <arg column="action_id" />
+        <arg column="action_id"/>
       </constructor>
     </collection>
   </resultMap>
@@ -302,24 +292,41 @@
         #{roleId}
       </foreach>
       AND a.path=#{path}
-      AND r.deleted = 0
-      AND rb.deleted = 0
-      AND a.deleted = 0
-      AND a.enabled = 1
-      AND a.locked = 0
+      AND r.deleted = false
+      AND r.locked = false
+      AND rb.deleted = false
+      AND a.deleted = false
+      AND a.enabled = true
+      AND a.locked = false
     </where>
   </select>
 
-  <select id="selectRoles" resultMap="RolesMap">
+  <select id="selectRolesAndActionIdsAndMenuIds" resultMap="RolesMap">
     SELECT
-    <include refid="com.xuersheng.myProject.mapper.RoleMapper.Base_Column_List" />,
+    <include refid="com.xuersheng.myProject.mapper.RoleMapper.Base_Column_List"/>,
     rm.menu_id,
     ra.action_id
     FROM role r
     LEFT JOIN roles_menus rm ON r.id = rm.role_id
     LEFT JOIN roles_action ra ON r.id = ra.role_id
-    WHERE r.deleted = 0
-    AND (rm.deleted = 0 OR rm.deleted IS NULL)
-    AND (ra.deleted = 0 OR ra.deleted IS NULL)
+    <where>
+      <if test="name != null">
+        r.name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="code != null">
+        AND r.code = #{code,jdbcType=VARCHAR}
+      </if>
+      <choose>
+        <when test="locked != null">
+          AND r.locked = #{locked,jdbcType=BIT}
+        </when>
+        <otherwise>
+          AND r.locked = false
+        </otherwise>
+      </choose>
+      AND r.deleted = false
+      AND (rm.deleted = false OR rm.deleted IS NULL)
+      AND (ra.deleted = false OR ra.deleted IS NULL)
+    </where>
   </select>
 </mapper>

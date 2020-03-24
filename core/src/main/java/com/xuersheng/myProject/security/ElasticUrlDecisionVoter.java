@@ -1,6 +1,6 @@
 package com.xuersheng.myProject.security;
 
-import com.xuersheng.myProject.services.PermissionServices;
+import com.xuersheng.myProject.services.RoleServices;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
@@ -15,7 +15,7 @@ import java.util.List;
 public class ElasticUrlDecisionVoter implements AccessDecisionVoter<FilterInvocation> {
 
     @Resource
-    PermissionServices permissionServices;
+    RoleServices roleServices;
 
     @Override
     public boolean supports(ConfigAttribute attribute) {
@@ -36,7 +36,7 @@ public class ElasticUrlDecisionVoter implements AccessDecisionVoter<FilterInvoca
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetailsImpl) {
             List<Long> roleIds = ((UserDetailsImpl) principal).getUser().getRoleIds();
-            return permissionServices.isHasAction(roleIds, path) ? ACCESS_GRANTED : ACCESS_DENIED;
+            return roleServices.hasAction(roleIds, path) ? ACCESS_GRANTED : ACCESS_DENIED;
         }
         return ACCESS_ABSTAIN;
     }

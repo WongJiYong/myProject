@@ -32,5 +32,5 @@ public interface RoleMapper {
 
     int countActionsByRole(@Param("roleIds") List<Long> roleIds, @Param("path") String path);
 
-    List<Role> selectRoles(RoleDto roleDto);
+    List<Role> selectRolesAndActionIdsAndMenuIds(RoleDto roleDto);
 }

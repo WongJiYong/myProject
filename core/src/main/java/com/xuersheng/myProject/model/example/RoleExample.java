@@ -240,6 +240,76 @@ public class RoleExample {
             return (Criteria) this;
         }
 
+        public Criteria andCodeIsNull() {
+            addCriterion("r.code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeIsNotNull() {
+            addCriterion("r.code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeEqualTo(String value) {
+            addCriterion("r.code =", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeNotEqualTo(String value) {
+            addCriterion("r.code <>", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeGreaterThan(String value) {
+            addCriterion("r.code >", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("r.code >=", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeLessThan(String value) {
+            addCriterion("r.code <", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeLessThanOrEqualTo(String value) {
+            addCriterion("r.code <=", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeLike(String value) {
+            addCriterion("r.code like", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeNotLike(String value) {
+            addCriterion("r.code not like", value, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeIn(List<String> values) {
+            addCriterion("r.code in", values, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeNotIn(List<String> values) {
+            addCriterion("r.code not in", values, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeBetween(String value1, String value2) {
+            addCriterion("r.code between", value1, value2, "code");
+            return (Criteria) this;
+        }
+
+        public Criteria andCodeNotBetween(String value1, String value2) {
+            addCriterion("r.code not between", value1, value2, "code");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkIsNull() {
             addCriterion("r.remark is null");
             return (Criteria) this;
@@ -310,136 +380,6 @@ public class RoleExample {
             return (Criteria) this;
         }
 
-        public Criteria andDataScopeIsNull() {
-            addCriterion("r.data_scope is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataScopeIsNotNull() {
-            addCriterion("r.data_scope is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataScopeEqualTo(String value) {
-            addCriterion("r.data_scope =", value, "dataScope");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataScopeNotEqualTo(String value) {
-            addCriterion("r.data_scope <>", value, "dataScope");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataScopeGreaterThan(String value) {
-            addCriterion("r.data_scope >", value, "dataScope");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataScopeGreaterThanOrEqualTo(String value) {
-            addCriterion("r.data_scope >=", value, "dataScope");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataScopeLessThan(String value) {
-            addCriterion("r.data_scope <", value, "dataScope");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataScopeLessThanOrEqualTo(String value) {
-            addCriterion("r.data_scope <=", value, "dataScope");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataScopeLike(String value) {
-            addCriterion("r.data_scope like", value, "dataScope");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataScopeNotLike(String value) {
-            addCriterion("r.data_scope not like", value, "dataScope");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataScopeIn(List<String> values) {
-            addCriterion("r.data_scope in", values, "dataScope");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataScopeNotIn(List<String> values) {
-            addCriterion("r.data_scope not in", values, "dataScope");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataScopeBetween(String value1, String value2) {
-            addCriterion("r.data_scope between", value1, value2, "dataScope");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataScopeNotBetween(String value1, String value2) {
-            addCriterion("r.data_scope not between", value1, value2, "dataScope");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelIsNull() {
-            addCriterion("r.level is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelIsNotNull() {
-            addCriterion("r.level is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelEqualTo(Integer value) {
-            addCriterion("r.level =", value, "level");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelNotEqualTo(Integer value) {
-            addCriterion("r.level <>", value, "level");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelGreaterThan(Integer value) {
-            addCriterion("r.level >", value, "level");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelGreaterThanOrEqualTo(Integer value) {
-            addCriterion("r.level >=", value, "level");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelLessThan(Integer value) {
-            addCriterion("r.level <", value, "level");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelLessThanOrEqualTo(Integer value) {
-            addCriterion("r.level <=", value, "level");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelIn(List<Integer> values) {
-            addCriterion("r.level in", values, "level");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelNotIn(List<Integer> values) {
-            addCriterion("r.level not in", values, "level");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelBetween(Integer value1, Integer value2) {
-            addCriterion("r.level between", value1, value2, "level");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelNotBetween(Integer value1, Integer value2) {
-            addCriterion("r.level not between", value1, value2, "level");
-            return (Criteria) this;
-        }
-
         public Criteria andCreateTimeIsNull() {
             addCriterion("r.create_time is null");
             return (Criteria) this;
@@ -500,73 +440,63 @@ public class RoleExample {
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIsNull() {
-            addCriterion("r.permission is null");
+        public Criteria andLockedIsNull() {
+            addCriterion("r.locked is null");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIsNotNull() {
-            addCriterion("r.permission is not null");
+        public Criteria andLockedIsNotNull() {
+            addCriterion("r.locked is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionEqualTo(String value) {
-            addCriterion("r.permission =", value, "permission");
+        public Criteria andLockedEqualTo(Boolean value) {
+            addCriterion("r.locked =", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionNotEqualTo(String value) {
-            addCriterion("r.permission <>", value, "permission");
+        public Criteria andLockedNotEqualTo(Boolean value) {
+            addCriterion("r.locked <>", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionGreaterThan(String value) {
-            addCriterion("r.permission >", value, "permission");
+        public Criteria andLockedGreaterThan(Boolean value) {
+            addCriterion("r.locked >", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionGreaterThanOrEqualTo(String value) {
-            addCriterion("r.permission >=", value, "permission");
+        public Criteria andLockedGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("r.locked >=", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionLessThan(String value) {
-            addCriterion("r.permission <", value, "permission");
+        public Criteria andLockedLessThan(Boolean value) {
+            addCriterion("r.locked <", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionLessThanOrEqualTo(String value) {
-            addCriterion("r.permission <=", value, "permission");
+        public Criteria andLockedLessThanOrEqualTo(Boolean value) {
+            addCriterion("r.locked <=", value, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionLike(String value) {
-            addCriterion("r.permission like", value, "permission");
+        public Criteria andLockedIn(List<Boolean> values) {
+            addCriterion("r.locked in", values, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionNotLike(String value) {
-            addCriterion("r.permission not like", value, "permission");
+        public Criteria andLockedNotIn(List<Boolean> values) {
+            addCriterion("r.locked not in", values, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIn(List<String> values) {
-            addCriterion("r.permission in", values, "permission");
+        public Criteria andLockedBetween(Boolean value1, Boolean value2) {
+            addCriterion("r.locked between", value1, value2, "locked");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionNotIn(List<String> values) {
-            addCriterion("r.permission not in", values, "permission");
-            return (Criteria) this;
-        }
-
-        public Criteria andPermissionBetween(String value1, String value2) {
-            addCriterion("r.permission between", value1, value2, "permission");
-            return (Criteria) this;
-        }
-
-        public Criteria andPermissionNotBetween(String value1, String value2) {
-            addCriterion("r.permission not between", value1, value2, "permission");
+        public Criteria andLockedNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("r.locked not between", value1, value2, "locked");
             return (Criteria) this;
         }
 

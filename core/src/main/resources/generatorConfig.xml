@@ -84,9 +84,9 @@
 <!--        <table schema="myproject" tableName="process_info" alias="pi">-->
 <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
 <!--        </table>-->
-<!--        <table schema="myproject" tableName="role" alias="r">-->
-<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-<!--        </table>-->
+        <table schema="myproject" tableName="role" alias="r">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 <!--        <table schema="myproject" tableName="roles_action" alias="ra"/>-->
 
 <!--        <table schema="myproject" tableName="roles_depts" alias="rd" />-->

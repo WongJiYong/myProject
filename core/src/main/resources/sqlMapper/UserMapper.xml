@@ -410,9 +410,10 @@
     LEFT JOIN role r ON ur.role_id = r.id
     <where>
       u.id = #{id}
-      AND (us.deleted = 0 OR us.deleted IS NULL)
-      AND (ur.deleted = 0 OR ur.deleted IS NULL)
-      AND (r.deleted = 0 OR r.deleted IS NULL)
+      AND (us.deleted = false OR us.deleted IS NULL)
+      AND (ur.deleted = false OR ur.deleted IS NULL)
+      AND (r.deleted = false OR r.deleted IS NULL)
+      AND (r.locked = false OR r.deleted IS NULL)
     </where>
   </select>
 

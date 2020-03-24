@@ -1,13 +1,8 @@
 package com.xuersheng.myProject.services;
 
 import com.xuersheng.myProject.db.DataSource;
-import com.xuersheng.myProject.mapper.PermissionMapper;
-import com.xuersheng.myProject.mapper.RoleMapper;
-import com.xuersheng.myProject.mapper.RolesActionMapper;
-import com.xuersheng.myProject.mapper.RolesMenusMapper;
-import com.xuersheng.myProject.model.Role;
-import com.xuersheng.myProject.model.RolesAction;
-import com.xuersheng.myProject.model.RolesMenus;
+import com.xuersheng.myProject.mapper.*;
+import com.xuersheng.myProject.model.*;
 import com.xuersheng.myProject.model.dto.RoleActionDto;
 import com.xuersheng.myProject.model.dto.RoleDto;
 import com.xuersheng.myProject.model.dto.RoleMenuDto;
@@ -18,6 +13,7 @@ import com.xuersheng.myProject.model.vo.RoleVo;
 import com.xuersheng.myProject.util.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -32,23 +28,28 @@ public class RoleServices {
     RoleMapper roleMapper;
 
     @Resource
+    ActionMapper actionMapper;
+
+    @Resource
+    MenuMapper menuMapper;
+
+    @Resource
     RolesMenusMapper rolesMenusMapper;
 
     @Resource
     RolesActionMapper rolesActionMapper;
 
-    @Resource
-    PermissionMapper permissionMapper;
-
     public List<RoleVo> queryRolesAndActionIdsAndMenuIds(RoleDto roleDto) {
-        List<Role> roles = permissionMapper.selectRoles(roleDto);
+        List<Role> roles = roleMapper.selectRolesAndActionIdsAndMenuIds(roleDto);
         return BeanUtils.copyListDeeply(roles, RoleVo.class);
     }
 
+    public boolean hasAction(List<Long> roleIds, String path) {
+        return roleMapper.countActionsByRole(roleIds, path) > 0;
+    }
 
     public boolean addRole(RoleDto roleDto) {
         Role role = new Role();
-        role.setId(null);
         role.setVersion(1);
         role.setDeleted(false);
         role.setCreateTime(new Date());
@@ -117,8 +118,15 @@ public class RoleServices {
     }
 
     private boolean saveOrUpdateAction(RolesAction rolesAction) {
-        RolesAction action = rolesActionMapper.selectByPrimaryKey(rolesAction.getActionId(), rolesAction.getRoleId());
-        if (action == null) {
+        Long roleId = rolesAction.getRoleId();
+        Long actionId = rolesAction.getActionId();
+        //check roleId and actionId
+        Role role = roleMapper.selectByPrimaryKey(roleId);
+        Action action = actionMapper.selectByPrimaryKey(actionId);
+        Assert.isTrue(role != null, "role must not be null");
+        Assert.isTrue(action != null, "action must not be null");
+        RolesAction rolesAction2 = rolesActionMapper.selectByPrimaryKey(actionId, roleId);
+        if (rolesAction2 == null) {
             return 1 == rolesActionMapper.insert(rolesAction);
         } else {
             return 1 == rolesActionMapper.updateByPrimaryKeySelective(rolesAction);
@@ -126,8 +134,15 @@ public class RoleServices {
     }
 
     private boolean saveOrUpdateMenu(RolesMenus rolesMenus) {
-        RolesMenus action = rolesMenusMapper.selectByPrimaryKey(rolesMenus.getMenuId(), rolesMenus.getRoleId());
-        if (action == null) {
+        Long menuId = rolesMenus.getMenuId();
+        Long roleId = rolesMenus.getRoleId();
+        //check roleId and menuId
+        Menu menu = menuMapper.selectByPrimaryKey(menuId);
+        Role role = roleMapper.selectByPrimaryKey(roleId);
+        Assert.isTrue(role != null, "role must not be null");
+        Assert.isTrue(menu != null, "menu must not be null");
+        RolesMenus rolesMenus2 = rolesMenusMapper.selectByPrimaryKey(menuId, roleId);
+        if (rolesMenus2 == null) {
             return 1 == rolesMenusMapper.insert(rolesMenus);
         } else {
             return 1 == rolesMenusMapper.updateByPrimaryKeySelective(rolesMenus);

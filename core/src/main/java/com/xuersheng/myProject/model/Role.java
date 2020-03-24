@@ -27,25 +27,18 @@ public class Role {
     private String name;
 
     /**
+     * 编码
+     *
+     * @mbg.generated
+     */
+    private String code;
+
+    /**
      * 备注
      *
      * @mbg.generated
      */
     private String remark;
-
-    /**
-     * 数据权限
-     *
-     * @mbg.generated
-     */
-    private String dataScope;
-
-    /**
-     * 角色级别
-     *
-     * @mbg.generated
-     */
-    private Integer level;
 
     /**
      * 创建日期
@@ -55,11 +48,11 @@ public class Role {
     private Date createTime;
 
     /**
-     * 功能权限
+     * 是否锁定
      *
      * @mbg.generated
      */
-    private String permission;
+    private Boolean locked;
 
     /**
      * 逻辑删除位
