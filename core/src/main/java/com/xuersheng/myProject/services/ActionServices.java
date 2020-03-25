@@ -9,6 +9,7 @@ import com.xuersheng.myProject.model.vo.ActionVo;
 import com.xuersheng.myProject.util.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,9 +26,16 @@ public class ActionServices {
     public List<ActionVo> queryActions(ActionDto actionDto) {
         ActionExample actionExample = new ActionExample();
         ActionExample.Criteria criteria = actionExample.createCriteria();
+        if (actionDto.getId() != null){
+            criteria.andIdEqualTo(actionDto.getId());
+        }
         if (actionDto.getMenuId() != null) {
             criteria.andMenuIdEqualTo(actionDto.getMenuId());
         }
+        if (StringUtils.hasText(actionDto.getPath())){
+            criteria.andPathEqualTo(actionDto.getPath());
+        }
+        criteria.andDeletedEqualTo(false);
         List<Action> actions = actionMapper.selectByExample(actionExample);
         return BeanUtils.copyListDeeply(actions, ActionVo.class);
     }
@@ -35,7 +43,6 @@ public class ActionServices {
     public boolean addAction(ActionDto actionDto) {
         Action action = new Action();
         BeanUtils.copyPropertiesDeeply(actionDto, action);
-        action.setId(null);
         action.setVersion(0);
         action.setDeleted(false);
         return 1 == actionMapper.insert(action);

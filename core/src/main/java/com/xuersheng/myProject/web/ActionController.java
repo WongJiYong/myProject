@@ -4,10 +4,7 @@ import com.xuersheng.myProject.services.ActionServices;
 import com.xuersheng.myProject.model.dto.ActionDto;
 import com.xuersheng.myProject.model.vo.ActionVo;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -21,8 +18,8 @@ public class ActionController {
     @Resource
     ActionServices actionServices;
 
-    @PostMapping("query")
-    public ResponseEntity<Object> queryActions(@RequestBody ActionDto actionDto) {
+    @GetMapping("query")
+    public ResponseEntity<Object> queryActions(ActionDto actionDto) {
         List<ActionVo> menus = actionServices.queryActions(actionDto);
         return success(menus);
     }
@@ -34,7 +31,7 @@ public class ActionController {
     }
 
     @PostMapping("modify")
-    public ResponseEntity<Object> Action(@RequestBody ActionDto actionDto) {
+    public ResponseEntity<Object> modifyAction(@RequestBody ActionDto actionDto) {
         return actionServices.modifyAction(actionDto) ?
                 success() : error(MODIFY_ERROR);
     }

@@ -24,7 +24,7 @@ public class RoleController {
     RoleServices roleServices;
 
     @GetMapping("query")
-    public ResponseEntity<Object> queryRoles(@RequestBody(required = false) RoleDto roleDto) {
+    public ResponseEntity<Object> queryRoles(RoleDto roleDto) {
         List<RoleVo> menus = roleServices.queryRolesAndActionIdsAndMenuIds(roleDto);
         return ResponseBuilder.success(menus);
     }

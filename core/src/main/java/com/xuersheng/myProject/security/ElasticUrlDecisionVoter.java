@@ -32,7 +32,7 @@ public class ElasticUrlDecisionVoter implements AccessDecisionVoter<FilterInvoca
         assert authentication != null;
         assert fi != null;
         assert attributes != null;
-        String path = fi.getRequestUrl();
+        String path = fi.getHttpRequest().getRequestURI();
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetailsImpl) {
             List<Long> roleIds = ((UserDetailsImpl) principal).getUser().getRoleIds();

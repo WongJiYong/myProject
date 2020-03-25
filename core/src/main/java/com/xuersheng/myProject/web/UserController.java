@@ -55,8 +55,8 @@ public class UserController {
     }
 
 
-    @PostMapping("query")
-    public ResponseEntity<Object> queryUsers(@RequestBody UserDto userDto) {
+    @GetMapping("query")
+    public ResponseEntity<Object> queryUsers(UserDto userDto) {
         PageVo<?> pageVo = userServices.queryUsers(userDto);
         return ResponseBuilder.success(pageVo);
     }

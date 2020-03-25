@@ -18,7 +18,7 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
      * @param source the source bean
      * @param target the target bean
      */
-    public static <T> List<T> copyList(Collection source, Class<T> target) {
+    public static <T> List<T> copyList(Collection<T> source, Class<T> target) {
         if (source == null || source.isEmpty()) {
             return Collections.emptyList();
         }
@@ -35,7 +35,7 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         return targets;
     }
 
-    public static <T> List<T> copyListDeeply(Collection source, Class<T> target) {
+    public static <T> List<T> copyListDeeply(Collection<?> source, Class<T> target) {
         if (source == null || source.isEmpty()) {
             return Collections.emptyList();
         }
@@ -76,28 +76,35 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
             if (readMethod == null) {
                 continue;
             }
+
+            boolean simpleProperty = isSimpleProperty(targetPd.getPropertyType());
+
             Class<?> returnType = readMethod.getReturnType();
+
             boolean matched = ClassUtils.isAssignable(writeMethod.getParameterTypes()[0], returnType);
 
             try {
                 Object value = readMethod.invoke(source);
-                //
-                if (matched && Collection.class.isAssignableFrom(returnType)) {
-                    Collection sourceList = (Collection) value;
-                    Field targetField = target.getClass().getDeclaredField(targetPd.getName());
-                    Field sourceField = source.getClass().getDeclaredField(sourcePd.getName());
-                    Type targetType = targetField.getGenericType();
-                    Type sourceType = sourceField.getGenericType();
-                    Class<?> targetClass = (Class<?>) ((ParameterizedType) targetType).getActualTypeArguments()[0];
-                    Class<?> sourceClass = (Class<?>) ((ParameterizedType) sourceType).getActualTypeArguments()[0];
-                    if (!targetClass.isAssignableFrom(sourceClass) && !isSimpleValueType(targetClass)) {
-                        value = copyListDeeply(sourceList, targetClass);
+                if (matched) {
+                    //如果源和目标匹配 且属性类型为集合 深度拷贝
+                    if (List.class.isAssignableFrom(targetPd.getPropertyType())) {
+                        List sourceList = (List) value;
+                        Field targetField = target.getClass().getDeclaredField(targetPd.getName());
+                        Field sourceField = source.getClass().getDeclaredField(sourcePd.getName());
+                        Type targetType = targetField.getGenericType();
+                        Type sourceType = sourceField.getGenericType();
+                        Class<?> targetClass = (Class<?>) ((ParameterizedType) targetType).getActualTypeArguments()[0];
+                        Class<?> sourceClass = (Class<?>) ((ParameterizedType) sourceType).getActualTypeArguments()[0];
+                        if (!targetClass.isAssignableFrom(sourceClass) && !simpleProperty) {
+                            //如果集合内的类型不相等且不是简单属性 则深拷贝
+                            value = copyListDeeply(sourceList, targetClass);
+                        }
                     }
-                } else if (!matched) {
-                    if (isSimpleProperty(returnType)) {
+                } else {
+                    if (simpleProperty) {
                         continue;
                     }
-                    //当作对象处理
+                    //如果不匹配且不是简单属性
                     Object o = null;
                     if (value != null) {
                         o = instantiateClass(targetPd.getPropertyType());
@@ -105,6 +112,7 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
                     }
                     value = o;
                 }
+
                 if (!Modifier.isPublic(readMethod.getDeclaringClass().getModifiers())) {
                     readMethod.setAccessible(true);
                 }
