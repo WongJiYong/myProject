@@ -2,6 +2,8 @@ package com.xuersheng.myProject.web;
 
 import com.xuersheng.myProject.SystemApplication;
 import com.xuersheng.myProject.ThreadBox;
+import com.xuersheng.myProject.model.vo.ResultVo;
+import com.xuersheng.myProject.util.TestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
@@ -16,9 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.io.IOException;
-import java.util.Objects;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -47,6 +46,9 @@ public abstract class BaseControllerTest {
     @Autowired
     protected JacksonTester<Object> json;
 
+    @Autowired
+    protected JacksonTester<ResultVo<Object>> resutVo;
+
     /*
      * @MockBean 可以使用虚假得service bean
      */
@@ -71,14 +73,27 @@ public abstract class BaseControllerTest {
 
     }
 
-    protected void send(String url, Object jsonObj) throws Exception {
-        this.mvc.perform(
+    protected String httpPost(String url, Object jsonObj) throws Exception {
+        String content = this.mvc.perform(
                 post(url)
                         .with(csrf().asHeader())
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(json.write(jsonObj).getJson())
                         .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        ResultVo<Object> object = resutVo.parse(content).getObject();
+        log.info("code:{}:data:{}", object.getCode(), object.getData());
+        return content;
+    }
+
+    protected String httpGet(String url, Object mapObject) throws Exception {
+        url += TestUtil.obj2UrlParams(mapObject);
+        String content = this.mvc.perform(
+                get(url).accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        ResultVo<Object> object = resutVo.parse(content).getObject();
+        log.info("code:{}:data:{}", object.getCode(), object.getData());
+        return content;
     }
 
 }

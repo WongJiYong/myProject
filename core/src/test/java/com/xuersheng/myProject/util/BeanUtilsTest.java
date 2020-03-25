@@ -25,23 +25,26 @@ public class BeanUtilsTest {
         BeanUtils.copyPropertiesDeeply(s, t);
         System.out.println(t);
     }
+
+    @Data
+    static class Source {
+        private String a;
+        private Source s;
+        private List<String> str;
+        private List<Source> ls;
+
+    }
+
+    @Data
+    static class Target {
+
+        private String a;
+        private Target s;
+        private List<String> str;
+        private List<Target> ls;
+
+    }
 }
 
-@Data
-class Source {
-    private String a;
-    private Source s;
-    private List<String> str;
-    private List<Source> ls;
 
-}
 
-@Data
-class Target {
-
-    private String a;
-    private Target s;
-    private List<String> str;
-    private List<Target> ls;
-
-}

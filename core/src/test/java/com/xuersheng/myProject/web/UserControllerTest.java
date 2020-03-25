@@ -133,13 +133,7 @@ public class UserControllerTest extends BaseControllerTest {
 
 
     private void lockedUser(UserDto dto) throws Exception {
-        this.mvc.perform(
-                post(URL.lock)
-                        .with(csrf().asHeader())
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(json.write(dto).getJson())
-                        .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+        httpPost(URL.lock, dto);
     }
 
 
@@ -149,13 +143,7 @@ public class UserControllerTest extends BaseControllerTest {
         UserSettingDto dto = new UserSettingDto();
         dto.setRoleId(null);
         dto.setPageSize(30);
-        this.mvc.perform(
-                post(URL.setting)
-                        .with(csrf().asHeader())
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(json.write(dto).getJson())
-                        .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+        httpPost(URL.setting, dto);
     }
 
 
@@ -165,69 +153,32 @@ public class UserControllerTest extends BaseControllerTest {
         UserDto dto = new UserDto();
         PageDto pageDto = new PageDto();
         dto.setPage(pageDto);
-        MvcResult mvcResult = mvc.perform(
-                post(URL.query)
-                        .with(csrf().asHeader())
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(json.write(dto).getJson())
-                        .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk()).andReturn();
-        String contentAsString = mvcResult.getResponse().getContentAsString();
-        JsonNode jsonNode = new ObjectMapper().readTree(contentAsString);
+        String content = httpGet(URL.query, dto);
+        JsonNode jsonNode = new ObjectMapper().readTree(content);
         assert jsonNode.get("data").get("total").asInt() > 0;
     }
 
 
     private void addUser(UserDto dto) throws Exception {
-        this.mvc.perform(
-                post(URL.add)
-                        .with(csrf().asHeader())
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(json.write(dto).getJson())
-                        .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+        httpPost(URL.add, dto);
     }
 
 
     private void modifyUser(UserDto dto) throws Exception {
-        this.mvc.perform(
-                post(URL.modify)
-                        .with(csrf().asHeader())
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(json.write(dto).getJson())
-                        .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+        httpPost(URL.modify, dto);
     }
 
 
     private void removeUser(UserDto dto) throws Exception {
-        this.mvc.perform(
-                post(URL.remove)
-                        .with(csrf().asHeader())
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(json.write(dto).getJson())
-                        .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+        httpPost(URL.remove, dto);
     }
 
 
     private void addRole(UserRoleDto dto) throws Exception {
-        this.mvc.perform(
-                post(URL.addRole)
-                        .with(csrf().asHeader())
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(json.write(dto).getJson())
-                        .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+        httpPost(URL.addRole, dto);
     }
 
     private void removeRole(UserRoleDto dto) throws Exception {
-        this.mvc.perform(
-                post(URL.removeRole)
-                        .with(csrf().asHeader())
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(json.write(dto).getJson())
-                        .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+        httpPost(URL.removeRole, dto);
     }
 }

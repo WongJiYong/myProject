@@ -12,21 +12,15 @@ import com.xuersheng.myProject.model.vo.RoleVo;
 import com.xuersheng.myProject.util.TestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 @Slf4j
 @WithUserDetails("admin")
@@ -71,28 +65,22 @@ public class RoleControllerTest extends BaseControllerTest {
         RoleVo roleVo;
 
         addRole(roleDto);
-        List<RoleVo> roleVos = queryRoles(roleDto);
-        assert roleVos.size() == 1;
-        roleVo = roleVos.get(0);
-        roleDto.setId(roleVo.getId());
+        roleVo = querySingleRoles(roleDto);
 
         RoleDto modifyDto = TestUtil.randomObject(RoleDto.class, fields);
-        modifyDto.setLocked(!roleDto.getLocked());
+        modifyDto.setLocked(!roleVo.getLocked());
         modifyDto.setVersion(roleVo.getVersion());
-        modifyDto.setId(roleDto.getId());
+        modifyDto.setId(roleVo.getId());
         modifyRole(modifyDto);
 
-        roleVos = queryRoles(modifyDto);
-        assert roleVos.size() == 1;
-        roleVo = roleVos.get(0);
-        roleDto.setId(roleVo.getId());
-        TestUtil.equalsObjs(roleVos.get(0), modifyDto, fields);
-        //修改用户成功
-        log.info("修改用户成功");
-        roleDto = modifyDto;
+        roleVo = querySingleRoles(modifyDto);
+        assertNotEquals(roleVo.getVersion(), modifyDto.getVersion());
+        modifyDto.setVersion(roleVo.getVersion());
 
+        assert TestUtil.equalsObjs(roleVo, modifyDto);
+        roleDto = modifyDto;
         RoleActionDto dto = new RoleActionDto();
-        dto.setRoleId(roleDto.getId());
+        dto.setRoleId(roleVo.getId());
         //insert a temp action
         Action action = TestUtil.randomObject(Action.class);
         actionMapper.insert(action);
@@ -109,7 +97,7 @@ public class RoleControllerTest extends BaseControllerTest {
         Menu menu = TestUtil.randomObject(Menu.class);
         //insert a temp menu
         menuMapper.insert(menu);
-        roleMenuDto.setRoleId(roleDto.getId());
+        roleMenuDto.setRoleId(roleVo.getId());
         roleMenuDto.setMenuId(menu.getId());
         addMenu(roleMenuDto);
         RolesMenus rolesMenus = rolesMenusMapper.selectByPrimaryKey(roleMenuDto.getMenuId(), roleMenuDto.getRoleId());
@@ -125,45 +113,45 @@ public class RoleControllerTest extends BaseControllerTest {
     }
 
     private List<RoleVo> queryRoles(RoleDto dto) throws Exception {
-        MvcResult mvcResult = this.mvc.perform(
-                get(URL.query)
-                        .with(csrf().asHeader())
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(json.write(dto).getJson())
-                        .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk()).andReturn();
-        String content = mvcResult.getResponse().getContentAsString();
+        String content = httpGet(URL.query, dto);
         ResultVo<List<RoleVo>> obj = new ObjectMapper().readValue(content,
                 new TypeReference<ResultVo<List<RoleVo>>>() {
                 });
         return obj.getData();
     }
 
+    private RoleVo querySingleRoles(RoleDto dto) throws Exception {
+        List<RoleVo> roleVos = queryRoles(dto);
+        assertEquals(1, roleVos.size());
+        return roleVos.get(0);
+    }
+
+
     private void addRole(RoleDto dto) throws Exception {
-        send(URL.add, dto);
+        httpPost(URL.add, dto);
     }
 
     private void modifyRole(RoleDto dto) throws Exception {
-        send(URL.modify, dto);
+        httpPost(URL.modify, dto);
     }
 
     private void removeRole(RoleDto dto) throws Exception {
-        send(URL.remove, dto);
+        httpPost(URL.remove, dto);
     }
 
     private void addAction(RoleActionDto dto) throws Exception {
-        send(URL.addAction, dto);
+        httpPost(URL.addAction, dto);
     }
 
     private void removeAction(RoleActionDto dto) throws Exception {
-        send(URL.removeAction, dto);
+        httpPost(URL.removeAction, dto);
     }
 
     private void addMenu(RoleMenuDto dto) throws Exception {
-        send(URL.addMenu, dto);
+        httpPost(URL.addMenu, dto);
     }
 
     private void removeMenu(RoleMenuDto dto) throws Exception {
-        send(URL.removeMenu, dto);
+        httpPost(URL.removeMenu, dto);
     }
 }
