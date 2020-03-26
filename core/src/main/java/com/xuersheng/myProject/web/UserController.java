@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -54,7 +55,6 @@ public class UserController {
         return ResponseBuilder.success(b);
     }
 
-
     @GetMapping("query")
     public ResponseEntity<Object> queryUsers(UserDto userDto) {
         PageVo<?> pageVo = userServices.queryUsers(userDto);
@@ -74,10 +74,16 @@ public class UserController {
                 ResponseBuilder.success() : ResponseBuilder.error(ResponseBuilder.MODIFY_ERROR);
     }
 
-    @PostMapping("remove")
+    @PostMapping("enabled")
     public ResponseEntity<Object> removeUser(@RequestBody UserDto userDto) {
-        return userServices.removeUser(userDto) ?
+        return userServices.enabledUser(userDto) ?
                 ResponseBuilder.success() : ResponseBuilder.error(ResponseBuilder.REMOVE_ERROR);
+    }
+
+    @GetMapping("roles/query")
+    public ResponseEntity<Object> queryRoles(UserDto dto) {
+        List<Long> longs = userServices.queryUserRoles(dto);
+        return ResponseBuilder.success(longs);
     }
 
     @PostMapping("role/add")

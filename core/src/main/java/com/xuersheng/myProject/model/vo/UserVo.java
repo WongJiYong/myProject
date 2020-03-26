@@ -31,6 +31,8 @@ public class UserVo {
 
     private Boolean enabled;
 
+    private Integer version;
+
     private List<Long> roleIds;
 
     private List<RoleVo> roles;

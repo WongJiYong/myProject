@@ -71,17 +71,15 @@ public class RoleServices {
                 .andRoleIdEqualTo(roleId)
                 .andDeletedEqualTo(false);
         int size = rolesMenusMapper.selectByExample(rolesMenusExample).size();
-        if (size != 0) {
-            return false;
-        }
+
+        Assert.isTrue(size == 0, "the role has menus.");
         RolesActionExample rolesActionExample = new RolesActionExample();
         rolesActionExample.createCriteria()
                 .andRoleIdEqualTo(roleId)
                 .andDeletedEqualTo(false);
         size = rolesActionMapper.selectByExample(rolesActionExample).size();
-        if (size != 0) {
-            return false;
-        }
+
+        Assert.isTrue(size == 0, "the role has actions.");
         Role role = new Role();
         role.setId(roleDto.getId());
         role.setVersion(roleDto.getVersion());

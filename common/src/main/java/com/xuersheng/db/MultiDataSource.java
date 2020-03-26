@@ -1,6 +1,6 @@
-package com.xuersheng.myProject.db;
+package com.xuersheng.db;
 
-import com.xuersheng.myProject.ThreadBox;
+import com.xuersheng.util.ThreadBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;

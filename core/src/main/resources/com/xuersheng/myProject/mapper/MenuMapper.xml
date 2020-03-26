@@ -98,7 +98,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from menu m
     where m.id = #{id,jdbcType=BIGINT}
@@ -117,15 +117,15 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into menu (i_frame, name, component, 
-      pid, sort, icon, path, 
-      cache, enabled, component_name, 
-      create_time, permission, type, 
+    insert into menu (i_frame, name, component,
+      pid, sort, icon, path,
+      cache, enabled, component_name,
+      create_time, permission, type,
       deleted, version)
-    values (#{iFrame,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{component,jdbcType=VARCHAR}, 
-      #{pid,jdbcType=BIGINT}, #{sort,jdbcType=BIGINT}, #{icon,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
-      #{cache,jdbcType=BIT}, #{enabled,jdbcType=BIT}, #{componentName,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{permission,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+    values (#{iFrame,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{component,jdbcType=VARCHAR},
+      #{pid,jdbcType=BIGINT}, #{sort,jdbcType=BIGINT}, #{icon,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR},
+      #{cache,jdbcType=BIT}, #{enabled,jdbcType=BIT}, #{componentName,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{permission,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
       #{deleted,jdbcType=BIT}, #{version,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.xuersheng.myProject.model.Menu">
@@ -411,8 +411,13 @@
     <include refid="com.xuersheng.myProject.mapper.ActionMapper.Base_Column_List" />
     FROM menu m
     LEFT JOIN action a ON m.id = a.menu_id
-    WHERE m.deleted = 0
-    AND (a.deleted = 0 OR a.deleted IS NULL)
+    <where>
+      <if test="name != null">
+        m.name = #{name}
+      </if>
+      AND m.deleted = false
+      AND (a.deleted = false OR a.deleted IS NULL)
+    </where>
     ORDER BY m.sort;
   </select>
 </mapper>

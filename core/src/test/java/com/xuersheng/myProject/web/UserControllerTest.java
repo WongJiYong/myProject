@@ -25,9 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
@@ -51,7 +49,7 @@ public class UserControllerTest extends BaseControllerTest {
         static String query = "/user/query";
         static String add = "/user/add";
         static String modify = "/user/modify";
-        static String remove = "/user/remove";
+        static String remove = "/user/enabled";
         static String addRole = "/user/role/add";
         static String removeRole = "/user/role/remove";
     }
@@ -97,9 +95,11 @@ public class UserControllerTest extends BaseControllerTest {
         log.info("删除角色 success");
 
         //锁用户
+        boolean oldLocked = userDto.getLocked();
+        userDto.setLocked(!oldLocked);
         lockedUser(userDto);
         User user1 = userMapper.selectByPrimaryKey(userDto.getId());
-        assert user1 != null && user1.getLocked();
+        assert oldLocked != user1.getLocked();
         log.info("锁用户 success");
         //修改用户
         UserDto modifyUserDto = TestUtil.randomObject(UserDto.class, fields);
@@ -114,9 +114,11 @@ public class UserControllerTest extends BaseControllerTest {
         //删除用户
         modifyUserDto.setId(user2.getId());
         modifyUserDto.setVersion(user2.getVersion());
+        boolean oldEnabled = modifyUserDto.getEnabled();
+        modifyUserDto.setEnabled(!oldEnabled);
         removeUser(modifyUserDto);
         User user3 = userMapper.selectByPrimaryKey(userDto.getId());
-        assert user3 != null && user3.getDeleted();
+        assert user3 != null && oldEnabled != user3.getEnabled();
         log.info("删除用户 success");
     }
 

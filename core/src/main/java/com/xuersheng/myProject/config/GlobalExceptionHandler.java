@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.nio.file.AccessDeniedException;
 
-@ControllerAdvice
+@ControllerAdvice(basePackages = "com.xuersheng.myProject")
 @Slf4j
 public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(value = AccessDeniedException.class)
-    public ResponseEntity accessDeniedException(AccessDeniedException e) {
+    public ResponseEntity<?> accessDeniedException(AccessDeniedException e) {
         ResultVo<Object> resultVo = new ResultVo<>(false,
                 HttpStatus.UNAUTHORIZED.value(),
                 e.getMessage());
@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public ResponseEntity exceptionHandler(Exception e) {
+    public ResponseEntity<?> exceptionHandler(Exception e) {
         ResultVo<Object> resultVo = new ResultVo<>(false,
                 HttpStatus.BAD_REQUEST.value(),
                 e.getMessage());

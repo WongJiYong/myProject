@@ -1,4 +1,4 @@
-package com.xuersheng.myProject.exception;
+package com.xuersheng.exception;
 
 public class AlgorithmException extends Exception{
 

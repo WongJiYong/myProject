@@ -1,4 +1,4 @@
-package com.xuersheng.myProject.util;
+package com.xuersheng.util;
 
 import java.util.Date;
 

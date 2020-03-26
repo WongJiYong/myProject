@@ -1,39 +1,43 @@
-package com.xuersheng.myProject.aop;
+package com.xuersheng.aop;
 
-import com.xuersheng.myProject.ThreadBox;
-import com.xuersheng.myProject.db.DataSource;
-import com.xuersheng.myProject.db.DataSourcesRouter;
+import com.xuersheng.util.ThreadBox;
+import com.xuersheng.annotation.DataSource;
+import com.xuersheng.db.DataSourcesRouter;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.lang.reflect.Method;
-import java.util.Map;
 
 
 @Aspect
-@Component
 @Slf4j
 @Order(Ordered.LOWEST_PRECEDENCE - 100)
+@Component
 public class DatabaseAop {
 
-    @Resource(name = "routerMap")
-    Map<Class<? extends DataSourcesRouter>, DataSourcesRouter> routerMap;
+    private final ApplicationContext context;
 
-
-    @Pointcut("@within(com.xuersheng.myProject.db.DataSource) || @annotation(com.xuersheng.myProject.db.DataSource)")
-    public void useDataSourceInClass() {
+    @Autowired
+    public DatabaseAop(ApplicationContext context) {
+        this.context = context;
     }
 
 
-    @Around("useDataSourceInClass()")
+    @Pointcut("@within(com.xuersheng.annotation.DataSource) || @annotation(com.xuersheng.annotation.DataSource)")
+    public void useDataSource() {
+    }
+
+
+    @Around("useDataSource()")
     public Object dataSourceSwitcherInClass(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
@@ -51,7 +55,7 @@ public class DatabaseAop {
             routeCode = value;
         } else {
             Class<? extends DataSourcesRouter> dBRouter = annotation.router();
-            DataSourcesRouter dbRouter = routerMap.get(dBRouter);
+            DataSourcesRouter dbRouter = context.getBean(dBRouter);
             Object[] args = joinPoint.getArgs();
             routeCode = dbRouter.route(args);
         }

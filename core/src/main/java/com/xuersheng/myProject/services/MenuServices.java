@@ -6,7 +6,6 @@ import com.xuersheng.myProject.mapper.MenuMapper;
 import com.xuersheng.myProject.mapper.RoleMapper;
 import com.xuersheng.myProject.model.Menu;
 import com.xuersheng.myProject.model.Role;
-import com.xuersheng.myProject.model.UserSetting;
 import com.xuersheng.myProject.model.dto.MenuDto;
 import com.xuersheng.myProject.model.dto.RoleDto;
 import com.xuersheng.myProject.model.example.ActionExample;
@@ -21,11 +20,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import javax.security.auth.login.CredentialException;
 import java.util.Date;
 import java.util.List;
-
-import static com.xuersheng.myProject.util.ResponseBuilder.error;
 
 @Service
 @DataSource("default")
@@ -50,20 +46,21 @@ public class MenuServices {
     public List<MenuVo> queryMenusByRole(RoleDto roleDto) {
         RoleExample roleExample = new RoleExample();
         RoleExample.Criteria criteria = roleExample.createCriteria();
-        if (roleDto.getId() != null) {
-            criteria.andIdEqualTo(roleDto.getId());
-        }
+
+        Long roleId;
         if (StringUtils.hasText(roleDto.getCode())) {
             criteria.andCodeEqualTo(roleDto.getCode());
+            criteria.andDeletedEqualTo(false);
+            criteria.andLockedEqualTo(false);
+            List<Role> roles = roleMapper.selectByExample(roleExample);
+            Assert.isTrue(roles.size() == 1, "discover more then one role.");
+            boolean contains = SecurityContextUtils.getRoles().contains(roles.get(0).getCode());
+            Assert.isTrue(contains, "Insufficient authority");
+            roleId = roles.get(0).getId();
+        } else {
+            roleId = SecurityContextUtils.getUser().getUserSetting().getRoleId();
         }
-        criteria.andDeletedEqualTo(false);
-        criteria.andLockedEqualTo(false);
-        List<Role> roles = roleMapper.selectByExample(roleExample);
-        Assert.isTrue(roles.size() == 1, "discover more then one role.");
-        Role role = roles.get(0);
-        boolean contains = SecurityContextUtils.getRoles().contains(role.getCode());
-        Assert.isTrue(contains, "Insufficient authority");
-        List<Menu> menus = menuMapper.selectMenusByRoleId(role.getId());
+        List<Menu> menus = menuMapper.selectMenusByRoleId(roleId);
         return BeanUtils.copyListDeeply(menus, MenuVo.class);
     }
 
@@ -75,15 +72,7 @@ public class MenuServices {
      * @return 菜单和请求
      */
     public List<MenuVo> queryMenus(MenuDto menuDto) {
-        MenuExample menuExample = new MenuExample();
-        MenuExample.Criteria criteria = menuExample.createCriteria();
-        if (menuDto != null) {
-            if (StringUtils.hasText(menuDto.getName())) {
-                criteria.andNameEqualTo(menuDto.getName());
-            }
-        }
-        criteria.andDeletedEqualTo(false);
-        List<Menu> menus = menuMapper.selectByExample(menuExample);
+        List<Menu> menus = menuMapper.selectMenus(menuDto);
         return BeanUtils.copyListDeeply(menus, MenuVo.class);
     }
 
@@ -108,18 +97,16 @@ public class MenuServices {
         Long id = menuDto.getId();
         MenuExample menuExample = new MenuExample();
         menuExample.createCriteria()
-                .andPidEqualTo(id);
+                .andPidEqualTo(id)
+                .andDeletedEqualTo(false);
         long children = menuMapper.countByExample(menuExample);
-        if (children > 0) {
-            return false;
-        }
+        Assert.isTrue(children == 0, "the menu has children.");
         ActionExample actionExample = new ActionExample();
         actionExample.createCriteria()
-                .andMenuIdEqualTo(id);
+                .andMenuIdEqualTo(id)
+                .andDeletedEqualTo(false);
         long actions = actionMapper.countByExample(actionExample);
-        if (actions > 0) {
-            return false;
-        }
+        Assert.isTrue(actions == 0, "the menu has actions");
         BeanUtils.copyPropertiesDeeply(menuDto, menu);
         menu.setDeleted(true);
         return updateMenuByVersion(menu);

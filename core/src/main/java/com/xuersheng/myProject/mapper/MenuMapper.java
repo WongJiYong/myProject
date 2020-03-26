@@ -1,6 +1,7 @@
 package com.xuersheng.myProject.mapper;
 
 import com.xuersheng.myProject.model.Menu;
+import com.xuersheng.myProject.model.dto.MenuDto;
 import com.xuersheng.myProject.model.example.MenuExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -31,5 +32,5 @@ public interface MenuMapper {
 
     List<Menu> selectMenusByRoleId(Long roleId);
 
-    List<Menu> selectMenus();
+    List<Menu> selectMenus(MenuDto menuDto);
 }

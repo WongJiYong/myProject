@@ -1,6 +1,6 @@
-package com.xuersheng.myProject.typehandler;
+package com.xuersheng.typehandler;
 
-import com.xuersheng.myProject.enumm.BaseCodeEnum;
+import com.xuersheng.enumm.BaseCodeEnum;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 

@@ -95,5 +95,8 @@ public abstract class BaseControllerTest {
         log.info("code:{}:data:{}", object.getCode(), object.getData());
         return content;
     }
+    protected String httpGet(String url) throws Exception {
+        return httpGet(url, null);
+    }
 
 }

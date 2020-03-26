@@ -111,6 +111,9 @@ public class TestUtil {
     }
 
     public static String obj2UrlParams(Object mapObject, String... fields) {
+        if (mapObject == null){
+            return "";
+        }
         StringBuilder sb = object2UrlString("", mapObject, fields);
         sb.replace(0, 1, "?");
         return sb.toString();

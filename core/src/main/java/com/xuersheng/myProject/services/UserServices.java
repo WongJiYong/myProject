@@ -121,11 +121,15 @@ public class UserServices {
         return 1 == userMapper.updateByPrimaryKeySelective(role);
     }
 
-    public boolean removeUser(UserDto roleDto) {
-        User role = new User();
-        role.setId(roleDto.getId());
-        role.setDeleted(true);
-        return 1 == userMapper.updateByPrimaryKeySelective(role);
+    public boolean enabledUser(UserDto dto) {
+        User user = new User();
+        user.setEnabled(dto.getEnabled());
+        user.setVersion(dto.getVersion() + 1);
+        UserExample example = new UserExample();
+        example.createCriteria()
+                .andIdEqualTo(dto.getId())
+                .andVersionEqualTo(dto.getVersion());
+        return 1 == userMapper.updateByExampleSelective(user, example);
     }
 
     public boolean addRole(UserRoleDto dto) {
@@ -153,17 +157,21 @@ public class UserServices {
 
     public boolean lockUser(UserDto dto) {
         User user = new User();
-        user.setId(dto.getId());
-        user.setLocked(true);
-        return 1 == userMapper.updateByPrimaryKeySelective(user);
+        user.setLocked(dto.getLocked());
+        user.setVersion(dto.getVersion() + 1);
+        UserExample example = new UserExample();
+        example.createCriteria()
+                .andIdEqualTo(dto.getId())
+                .andVersionEqualTo(dto.getVersion());
+        return 1 == userMapper.updateByExampleSelective(user, example);
     }
 
 
-    public List<Long> queryUserRoles() {
-        Long userId = SecurityContextUtils.getUser().getId();
+    public List<Long> queryUserRoles(UserDto dto) {
         UsersRolesExample usersRolesExample = new UsersRolesExample();
         usersRolesExample.createCriteria()
-                .andUserIdEqualTo(userId);
+                .andUserIdEqualTo(dto.getId())
+                .andDeletedEqualTo(false);
         List<UsersRoles> usersRoles = usersRolesMapper.selectByExample(usersRolesExample);
         return usersRoles.stream().map(UsersRoles::getRoleId).collect(Collectors.toList());
     }
